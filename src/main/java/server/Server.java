@@ -20,22 +20,40 @@ public class Server {
     private ObjectOutputStream objectOutputStream;
     private final ArrayList<EventHandler> handlers;
 
+    /**
+     * Constructeur de la classe "Server" prenant en paramètre le numéro du port qui servira aux communications.
+     * La classe crée une liste
+     * @param port Port sur lequel créer le serveur.
+     * @throws IOException Exception si le format du port est invalide.
+     */
     public Server(int port) throws IOException {
         this.server = new ServerSocket(port, 1);
         this.handlers = new ArrayList<EventHandler>();
         this.addEventHandler(this::handleEvents);
     }
 
+    /**
+     * Ajoute un évènement à la liste d'évènemnts à être exécutés.
+     * @param h
+     */
     public void addEventHandler(EventHandler h) {
         this.handlers.add(h);
     }
 
+    /**
+     * ? Méthode ".handle" à comprendre.
+     * @param cmd
+     * @param arg
+     */
     private void alertHandlers(String cmd, String arg) {
         for (EventHandler h : this.handlers) {
             h.handle(cmd, arg);
         }
     }
 
+    /**
+     * La méthode "run" permet de communiquer avec les nouveaux clients.
+     */
     public void run() {
         while (true) {
             try {
@@ -52,6 +70,11 @@ public class Server {
         }
     }
 
+    /**
+     * À COMPLÉTER
+     * @throws IOException
+     * @throws ClassNotFoundException
+     */
     public void listen() throws IOException, ClassNotFoundException {
         String line;
         if ((line = this.objectInputStream.readObject().toString()) != null) {
@@ -62,6 +85,11 @@ public class Server {
         }
     }
 
+    /**
+     * À COMPLÉTER
+     * @param line
+     * @return
+     */
     public Pair<String, String> processCommandLine(String line) {
         String[] parts = line.split(" ");
         String cmd = parts[0];
@@ -69,12 +97,21 @@ public class Server {
         return new Pair<>(cmd, args);
     }
 
+    /**
+     * Déconnecte le serveur et ses streams lorsque la demande du client a été traitée par la méthode "run()".
+     * @throws IOException Exception s'il y a une entrée invalide.
+     */
     public void disconnect() throws IOException {
         objectOutputStream.close();
         objectInputStream.close();
         client.close();
     }
 
+    /**
+     * Redirection de la demande du client au serveur vers la méthode appropriée.
+     * @param cmd
+     * @param arg
+     */
     public void handleEvents(String cmd, String arg) {
         if (cmd.equals(REGISTER_COMMAND)) {
             handleRegistration();
