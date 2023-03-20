@@ -1,6 +1,7 @@
 package server;
 
 import javafx.util.Pair;
+import server.models.Course;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
