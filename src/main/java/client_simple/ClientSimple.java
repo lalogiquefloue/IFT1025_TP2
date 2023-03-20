@@ -1,6 +1,6 @@
-import server.models.*;
-
 package client_simple;
+
+import server.models.*;
 
 public class ClientSimple {
     public static void main(String[] args) {

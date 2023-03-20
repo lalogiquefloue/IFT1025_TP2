@@ -128,19 +128,33 @@ public class Server {
      @throws Exception si une erreur se produit lors de la lecture du fichier ou de l'écriture de l'objet dans le flux
      */
     public void handleLoadCourses(String arg) throws IOException {
-        // TODO: implémenter cette méthode
 
-        String session = arg;
+        ArrayList<Course> courses = new ArrayList<Course>();
 
         FileReader fr = new FileReader("src/main/java/server/data/cours.txt");
         BufferedReader reader = new BufferedReader(fr);
 
         String s;
+
         while((s = reader.readLine()) != null){
-            System.out.println(s);
+
+            String[] splitString = s.trim().split("\\s+");
+
+            if (splitString[2].equals(arg)){
+                String name    = splitString[0];
+                String code    = splitString[1];
+                String session = splitString[2];
+                courses.add(new Course(name, code, session));
+            }
+
         }
 
         reader.close();
+
+        for (int j = 0; j < courses.size(); j++) {
+            System.out.println(courses.get(j).toString());
+        }
+        // output stream à implémenter
     }
 
     /**
