@@ -2,9 +2,7 @@ package server;
 
 import javafx.util.Pair;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -45,14 +43,15 @@ public class Server {
      * @param cmd
      * @param arg
      */
-    private void alertHandlers(String cmd, String arg) {
+    private void alertHandlers(String cmd, String arg) throws IOException {
         for (EventHandler h : this.handlers) {
             h.handle(cmd, arg);
         }
     }
 
     /**
-     * La méthode "run" permet de communiquer avec les nouveaux clients.
+     * La méthode <code>run()</code> permet d'établir la connection avec les nouveaux clients en créant les
+     * <code>ObjectInputStream</code> et <code>ObjectOutputStream</code> requis.
      */
     public void run() {
         while (true) {
@@ -108,11 +107,11 @@ public class Server {
     }
 
     /**
-     * Redirection de la demande du client au serveur vers la méthode appropriée.
-     * @param cmd
-     * @param arg
+     * Redirection de la demande du client au serveur vers la méthode <code>handleRegistration()</code> ou <code>handleLoadCourses(arg)</code> selon .
+     * @param cmd : la commande à exécuter, <code>"INSCRIRE"</code> ou <code>"CHARGER"</code>.
+     * @param arg : argument pour la fonction <code>handleLoadCourses(arg)</code>. Correspond à la session demandée parmis: "Automne", "Hiver" ou "Été".
      */
-    public void handleEvents(String cmd, String arg) {
+    public void handleEvents(String cmd, String arg) throws IOException {
         if (cmd.equals(REGISTER_COMMAND)) {
             handleRegistration();
         } else if (cmd.equals(LOAD_COMMAND)) {
@@ -127,8 +126,20 @@ public class Server {
      @param arg la session pour laquelle on veut récupérer la liste des cours
      @throws Exception si une erreur se produit lors de la lecture du fichier ou de l'écriture de l'objet dans le flux
      */
-    public void handleLoadCourses(String arg) {
+    public void handleLoadCourses(String arg) throws IOException {
         // TODO: implémenter cette méthode
+
+        String session = arg;
+
+        FileReader fr = new FileReader("src/main/java/server/data/cours.txt");
+        BufferedReader reader = new BufferedReader(fr);
+
+        String s;
+        while((s = reader.readLine()) != null){
+            System.out.println(s);
+        }
+
+        reader.close();
     }
 
     /**
