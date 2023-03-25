@@ -22,6 +22,7 @@ public class Server {
     /**
      * Constructeur de la classe "Server" prenant en paramètre le numéro du port qui servira aux communications.
      * La classe crée une liste
+     *
      * @param port Port sur lequel créer le serveur.
      * @throws IOException Exception si le format du port est invalide.
      */
@@ -32,7 +33,8 @@ public class Server {
     }
 
     /**
-     * Ajoute un évènement à la liste d'évènemnts à être exécutés.
+     * Ajoute un évènement à la liste d'évènements à être exécutés.
+     *
      * @param h
      */
     public void addEventHandler(EventHandler h) {
@@ -40,7 +42,8 @@ public class Server {
     }
 
     /**
-     * ? Méthode ".handle" à comprendre.
+     * ?
+     *
      * @param cmd
      * @param arg
      */
@@ -51,8 +54,8 @@ public class Server {
     }
 
     /**
-     * La méthode <code>run()</code> permet d'établir la connection avec les nouveaux clients en créant les
-     * <code>ObjectInputStream</code> et <code>ObjectOutputStream</code> requis.
+     * Boucle d'évènements. La méthode <code>run()</code> permet d'établir la connection avec les nouveaux clients en créant les
+     * <code>ObjectInputStream</code> et <code>ObjectOutputStream</code> requis et attends les commandes à exécuter.
      */
     public void run() {
         while (true) {
@@ -72,6 +75,7 @@ public class Server {
 
     /**
      * À COMPLÉTER
+     *
      * @throws IOException
      * @throws ClassNotFoundException
      */
@@ -87,6 +91,7 @@ public class Server {
 
     /**
      * À COMPLÉTER
+     *
      * @param line
      * @return
      */
@@ -99,6 +104,7 @@ public class Server {
 
     /**
      * Déconnecte le serveur et ses streams lorsque la demande du client a été traitée par la méthode "run()".
+     *
      * @throws IOException Exception s'il y a une entrée invalide.
      */
     public void disconnect() throws IOException {
@@ -108,11 +114,12 @@ public class Server {
     }
 
     /**
-     * Redirection de la demande du client au serveur vers la méthode <code>handleRegistration()</code> ou <code>handleLoadCourses(arg)</code> selon .
+     * Redirection des évènements vers les méthodes <code>handleRegistration()</code> ou <code>handleLoadCourses(arg)</code>.
+     *
      * @param cmd : la commande à exécuter, <code>"INSCRIRE"</code> ou <code>"CHARGER"</code>.
      * @param arg : argument pour la fonction <code>handleLoadCourses(arg)</code>. Correspond à la session demandée parmis: "Automne", "Hiver" ou "Été".
      */
-    public void handleEvents(String cmd, String arg) throws IOException {
+    public void handleEvents(String cmd, String arg) {
         if (cmd.equals(REGISTER_COMMAND)) {
             handleRegistration();
         } else if (cmd.equals(LOAD_COMMAND)) {
@@ -121,49 +128,58 @@ public class Server {
     }
 
     /**
-     Lire un fichier texte contenant des informations sur les cours et les transformer en liste d'objets 'Course'.
-     La méthode filtre les cours par la session spécifiée en argument.
-     Ensuite, elle renvoie la liste des cours pour une session au client en utilisant l'objet 'objectOutputStream'.
-     @param arg la session pour laquelle on veut récupérer la liste des cours
-     @throws Exception si une erreur se produit lors de la lecture du fichier ou de l'écriture de l'objet dans le flux
+     * Lire un fichier texte contenant des informations sur les cours et les transformer en liste d'objets 'Course'.
+     * La méthode filtre les cours par la session spécifiée en argument.
+     * Ensuite, elle renvoie la liste des cours pour une session au client en utilisant l'objet 'objectOutputStream'.
+     * La méthode gère les exceptions si une erreur se produit lors de la lecture du fichier ou de l'écriture de l'objet dans le flux.
+     *
+     * @param arg la session pour laquelle on veut récupérer la liste des cours
      */
-    public void handleLoadCourses(String arg) throws IOException {
+    public void handleLoadCourses(String arg) {
 
         ArrayList<Course> courses = new ArrayList<Course>();
 
-        FileReader fr = new FileReader("src/main/java/server/data/cours.txt");
-        BufferedReader reader = new BufferedReader(fr);
+        try {
+            FileReader fr = new FileReader("src/main/java/server/data/cours.txt");
+            BufferedReader reader = new BufferedReader(fr);
 
-        String s;
+            String s;
 
-        while((s = reader.readLine()) != null){
+            while ((s = reader.readLine()) != null) {
 
-            String[] splitString = s.trim().split("\\s+");
+                String[] splitString = s.split(" ");
 
-            if (splitString[2].equals(arg)){
-                String name    = splitString[0];
-                String code    = splitString[1];
-                String session = splitString[2];
-                courses.add(new Course(name, code, session));
+                if (splitString[2].equals(arg)) {
+                    String name = splitString[0];
+                    String code = splitString[1];
+                    String session = splitString[2];
+                    courses.add(new Course(name, code, session));
+                }
             }
 
-        }
+            reader.close();
 
-        reader.close();
+            for (int j = 0; j < courses.size(); j++) {
+                System.out.println(courses.get(j).toString());
+            }
 
-        for (int j = 0; j < courses.size(); j++) {
-            System.out.println(courses.get(j).toString());
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
         // output stream à implémenter
     }
 
     /**
-     Récupérer l'objet 'RegistrationForm' envoyé par le client en utilisant 'objectInputStream', l'enregistrer dans un fichier texte
-     et renvoyer un message de confirmation au client.
-     @throws Exception si une erreur se produit lors de la lecture de l'objet, l'écriture dans un fichier ou dans le flux de sortie.
+     * Récupérer l'objet 'RegistrationForm' envoyé par le client en utilisant 'objectInputStream', l'enregistrer dans un fichier texte
+     * et renvoyer un message de confirmation au client.
+     *
+     * @throws Exception si une erreur se produit lors de la lecture de l'objet, l'écriture dans un fichier ou dans le flux de sortie.
      */
     public void handleRegistration() {
         // TODO: implémenter cette méthode
+        // objectInputStream à implémenter
     }
 }
 
