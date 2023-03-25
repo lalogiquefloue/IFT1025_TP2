@@ -1,6 +1,6 @@
 package client;
 
-//import client.models.*;
+//import client.models.*; // à confirmer que c'est possible?
 import server.models.*;
 
 import java.io.*;
@@ -24,24 +24,18 @@ public class ClientSimple {
             System.out.println("socket"); //DEBUG
             Socket cS = new Socket("127.0.0.1", 1337); // localHost 127.0.0.1
 
-//            OutputStreamWriter os = new OutputStreamWriter(cS.getOutputStream());
-//            bufferedWriter = new BufferedWriter(os);
-
-            System.out.println("avant ObjectOutputStream"); //DEBUG
             objectOutputStream = new ObjectOutputStream(cS.getOutputStream());
-            System.out.println("ObjectOutputStream créé"); //DEBUG
-
-            System.out.println("avant ObjectInputStream"); //DEBUG
             objectInputStream = new ObjectInputStream(cS.getInputStream());
-            System.out.println("ObjectInputStream créé"); //DEBUG
 
-//            System.out.println("before askServer()"); //DEBUG
-//            askServer("CHARGER", "Automne");
-//            System.out.println("after askServer()"); //DEBUG
-
-            // TODO
             String session = chooseSession();
             ArrayList<Course> courses = loadCourses(session);
+
+            //DEBUG--------------------------------------------
+            for (int i =0; i < courses.size(); i++){
+                System.out.println(courses.get(i).toString());
+            }
+            //DEBUG--------------------------------------------
+
 //            String session            = chooseSession(bw);
 //            String course             = chooseCourse(bw);
 //            registerCourse(bw, courseName, courseCode, courseSession);
@@ -93,7 +87,27 @@ public class ClientSimple {
 
     public static String chooseSession() {
         String session = "";
-        //TODO
+        System.out.println("*** Bienvenue au portail d'inscription de cours de L'UdeM ***");
+        System.out.println("Veuillez choisir la session pour laquelle vous voulez consulter la liste des cours:");
+        System.out.println("1. Automne");
+        System.out.println("2. Hiver");
+        System.out.println("3. Été");
+
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Choix: ");
+        int sessionChoice = scanner.nextInt();
+
+        switch(sessionChoice){
+            case 1:
+                session = "Automne";
+                break;
+            case 2:
+                session = "Hiver";
+                break;
+            case 3:
+                session = "Ete";
+                break;
+        }
         return session;
     }
 

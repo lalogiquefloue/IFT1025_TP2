@@ -174,12 +174,12 @@ public class Server {
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-            finally { //DEBUG
-
-                for (int j = 0; j < courses.size(); j++) {
-                    System.out.println(courses.get(j).toString());
-                }
-            }
+//            finally { //DEBUG
+//
+//                for (int j = 0; j < courses.size(); j++) {
+//                    System.out.println(courses.get(j).toString());
+//                }
+//            }
 
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
