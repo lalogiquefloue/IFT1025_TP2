@@ -145,7 +145,7 @@ public class Server {
      */
     public void handleLoadCourses(String arg) {
 
-        System.out.println("handleLoadCourses");
+        System.out.println("inside handleLoadCourses()");
 
         ArrayList<Course> courses = new ArrayList<Course>();
 
@@ -176,12 +176,6 @@ public class Server {
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-//            finally { //DEBUG
-//
-//                for (int j = 0; j < courses.size(); j++) {
-//                    System.out.println(courses.get(j).toString());
-//                }
-//            }
 
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
@@ -198,7 +192,7 @@ public class Server {
      */
     public void handleRegistration() {
         // TODO: implémenter cette méthode
-        System.out.println("INSCRIRE");
+        System.out.println("inside handleRegistration()");
         // objectInputStream à implémenter
     }
 }
