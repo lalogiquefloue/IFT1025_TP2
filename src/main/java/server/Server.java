@@ -67,7 +67,7 @@ public class Server {
                 objectOutputStream = new ObjectOutputStream(client.getOutputStream());
                 System.out.println("ObjectOutputStream créé"); //DEBUG
                 listen();
-                System.out.println("listen"); //DEBUG
+                System.out.println("after listen() in run()"); //DEBUG
                 disconnect();
                 System.out.println("Client déconnecté!");
             } catch (Exception e) {
@@ -127,8 +127,10 @@ public class Server {
      */
     public void handleEvents(String cmd, String arg) {
         if (cmd.equals(REGISTER_COMMAND)) {
+            System.out.println("call handelRegistration()");
             handleRegistration();
         } else if (cmd.equals(LOAD_COMMAND)) {
+            System.out.println("call handleLoadCourse()");
             handleLoadCourses(arg);
         }
     }
@@ -196,6 +198,7 @@ public class Server {
      */
     public void handleRegistration() {
         // TODO: implémenter cette méthode
+        System.out.println("INSCRIRE");
         // objectInputStream à implémenter
     }
 }

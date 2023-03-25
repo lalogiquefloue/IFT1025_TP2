@@ -14,77 +14,127 @@ public class ClientSimple {
 
     static String courseName;
     static String courseCode;
+    static boolean courseIsChosen = false;
     static String courseSession;
+    static ArrayList<Course> courses;
     private static ObjectInputStream objectInputStream;
     private static ObjectOutputStream objectOutputStream;
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         System.out.println("main"); //DEBUG
 
-        try {
-            System.out.println("socket"); //DEBUG
-            Socket cS = new Socket("127.0.0.1", 1337); // localHost 127.0.0.1
+//        try {
+//            Socket cS = new Socket("127.0.0.1", 1337); // localHost 127.0.0.1
+//            objectOutputStream = new ObjectOutputStream(cS.getOutputStream());
+//            objectInputStream = new ObjectInputStream(cS.getInputStream());
 
-            objectOutputStream = new ObjectOutputStream(cS.getOutputStream());
-            objectInputStream = new ObjectInputStream(cS.getInputStream());
 
-            mainLoop();
+        while (!courseIsChosen) {
+            courseSession = chooseSession();
+            courses = loadCourses(courseSession);
 
-            objectInputStream.close();
-            objectOutputStream.close();
-            cS.close();
+            //DEBUG--------------------------------------------
+            for (int i = 0; i < courses.size(); i++) {
+                System.out.println(courses.get(i).toString());
+            }
+            //DEBUG--------------------------------------------
 
-        } catch (ConnectException x) {
-            System.out.println("Connexion impossible sur port 1337: pas de serveur.");
-        } catch (IOException e) {
-            e.printStackTrace();
+            chooseCourse(courses);
         }
+        System.out.println("after main while loop");
+        registerCourse();
+
+//            objectInputStream.close();
+//            objectOutputStream.close();
+//            cS.close();
+
+//        } catch (ConnectException x) {
+//            System.out.println("Connexion impossible sur port 1337: pas de serveur.");
+//        } catch (IOException e) {
+//            e.printStackTrace();
+
+//        } catch (Exception e) {
+//            throw new RuntimeException(e);
+//        }
     }
 
-    public static void mainLoop() {
-        courseSession = chooseSession();
-        ArrayList<Course> courses = loadCourses(courseSession);
+//    public static void mainLoop() {
+//        courseSession = chooseSession();
+//        courses = loadCourses(courseSession);
+//
+//        //DEBUG--------------------------------------------
+//        for (int i = 0; i < courses.size(); i++) {
+//            System.out.println(courses.get(i).toString());
+//        }
+//        //DEBUG--------------------------------------------
+//
+//        chooseCourse(courses);
+////            registerCourse();
+//    }
 
-        //DEBUG--------------------------------------------
-        for (int i = 0; i < courses.size(); i++) {
-            System.out.println(courses.get(i).toString());
-        }
-        //DEBUG--------------------------------------------
+//    public static void askServer(String cmd, String arg) {
+//
+//        try {
+//            Socket cS = new Socket("127.0.0.1", 1337); // localHost 127.0.0.1
+//            objectOutputStream = new ObjectOutputStream(cS.getOutputStream());
+//            objectInputStream = new ObjectInputStream(cS.getInputStream());
+//
+//            String line = cmd + " " + arg + "\n";
+//
+//            objectOutputStream.writeObject(line);
+//            objectOutputStream.flush();
+//
+//            System.out.println("askServer(" + cmd + ", " + arg + ") was called"); //DEBUG
+//
+//            objectOutputStream.close();
+//            cS.close();
+//
+//        } catch (ConnectException x) {
+//            System.out.println("Connexion impossible sur port 1337: pas de serveur.");
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//    }
 
-        chooseCourse(courses);
-//            registerCourse();
+    public static void connect() throws IOException {
+        Socket cS = new Socket("127.0.0.1", 1337); // localHost 127.0.0.1
+        objectOutputStream = new ObjectOutputStream(cS.getOutputStream());
+        objectInputStream = new ObjectInputStream(cS.getInputStream());
     }
 
-    public static void askServer(String cmd, String arg) {
-        String line = cmd + " " + arg + "\n";
-        try {
-            objectOutputStream.writeObject(line);
-            objectOutputStream.flush();
-            System.out.println("askServer(" + cmd + ", " + arg + ") was called");
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+    public static void disconnect() throws IOException {
+        objectOutputStream.close();
+        objectInputStream.close();
+//        cS.close(); // important?
     }
+    public static ArrayList<Course> loadCourses(String arg) throws IOException {
 
-    public static ArrayList<Course> loadCourses(String arg) {
-        askServer("CHARGER", arg);
-        System.out.println("après charger");
+        connect();
+
+        objectOutputStream.writeObject("CHARGER " + arg);
+        objectOutputStream.flush();
+
         try {
             System.out.println("in try");
             Object courses = objectInputStream.readObject();
+            System.out.println("after objectinputstream");
+
+            disconnect();
+
             return (ArrayList<Course>) courses;
         } catch (IOException e) {
-            System.out.println("IOException");
+            System.out.println("IOException: " + e);
             throw new RuntimeException(e);
         } catch (ClassNotFoundException e) {
-            System.out.println("ClassNotFoundException");
+            System.out.println("ClassNotFoundException: " + e);
             throw new RuntimeException(e);
         }
+
     }
 
-    public static void registerCourse(String name, String code, String session) {
+    public static void registerCourse() {
         // TODO
-        askServer("CHARGER", "");
+        System.out.println("inside registerCourse()");
     }
 
     public static String chooseSession() {
@@ -117,12 +167,13 @@ public class ClientSimple {
         Course course = null;
         System.out.println("Les cours offerts pendant la session d'" + courseSession + " sont:");
         for (int i = 0; i < courses.size(); i++) {
-            System.out.println(i+1 + ". " + courses.get(i).getCode() + " " + courses.get(i).getName());
+            System.out.println(i + 1 + ". " + courses.get(i).getCode() + " " + courses.get(i).getName());
         }
         System.out.println("Options:");
         System.out.println("1. Consulter les cours offerts pour une autre session.");
         System.out.println("2. Inscription à un cours.");
 
+        loop:
         while (true) {
             Scanner scanner = new Scanner(System.in);
             System.out.println("Choix: ");
@@ -130,9 +181,10 @@ public class ClientSimple {
 
             switch (choice) {
                 case 1:
-                    mainLoop(); // BUG A REGLER
+                    break loop;
                 case 2:
-                    break;
+                    courseIsChosen = true;
+                    break loop;
                 default:
                     System.out.println("Choix invalide, recommencer.");
             }
