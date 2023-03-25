@@ -1,6 +1,7 @@
 package client;
 
 //import client.models.*; // à confirmer que c'est possible?
+
 import server.models.*;
 
 import java.io.*;
@@ -31,14 +32,13 @@ public class ClientSimple {
             ArrayList<Course> courses = loadCourses(session);
 
             //DEBUG--------------------------------------------
-            for (int i =0; i < courses.size(); i++){
+            for (int i = 0; i < courses.size(); i++) {
                 System.out.println(courses.get(i).toString());
             }
             //DEBUG--------------------------------------------
 
-//            String session            = chooseSession(bw);
-//            String course             = chooseCourse(bw);
-//            registerCourse(bw, courseName, courseCode, courseSession);
+            Course chosenCourse = chooseCourse(courses);
+//            registerCourse(courseName, courseCode, courseSession);
 //            System.out.println("test");
 //            bufferedWriter.close();
             objectInputStream.close();
@@ -53,7 +53,6 @@ public class ClientSimple {
     }
 
     public static void askServer(String cmd, String arg) {
-        System.out.println("askServer method");
         String line = cmd + " " + arg + "\n";
         try {
             objectOutputStream.writeObject(line);
@@ -93,27 +92,27 @@ public class ClientSimple {
         System.out.println("2. Hiver");
         System.out.println("3. Été");
 
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("Choix: ");
-        int sessionChoice = scanner.nextInt();
+        while (true) {
+            Scanner scanner = new Scanner(System.in);
+            System.out.println("Choix: ");
+            int sessionChoice = scanner.nextInt();
 
-        switch(sessionChoice){
-            case 1:
-                session = "Automne";
-                break;
-            case 2:
-                session = "Hiver";
-                break;
-            case 3:
-                session = "Ete";
-                break;
+            switch (sessionChoice) {
+                case 1:
+                    return session = "Automne";
+                case 2:
+                    return session = "Hiver";
+                case 3:
+                    return session = "Ete";
+                default:
+                    System.out.println("Pas un choix valide, recommencer.");
+            }
         }
-        return session;
     }
 
-    public static String askWhichCourse() {
-        String course = "";
-        //TODO
+    public static Course chooseCourse(ArrayList<Course> courses) {
+        Course course = null;
+
         return course;
     }
 }
