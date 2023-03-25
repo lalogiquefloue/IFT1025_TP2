@@ -63,8 +63,11 @@ public class Server {
                 client = server.accept();
                 System.out.println("Connecté au client: " + client);
                 objectInputStream = new ObjectInputStream(client.getInputStream());
+                System.out.println("ObjectInputStream créé"); //DEBUG
                 objectOutputStream = new ObjectOutputStream(client.getOutputStream());
+                System.out.println("ObjectOutputStream créé"); //DEBUG
                 listen();
+                System.out.println("listen"); //DEBUG
                 disconnect();
                 System.out.println("Client déconnecté!");
             } catch (Exception e) {
@@ -80,11 +83,14 @@ public class Server {
      * @throws ClassNotFoundException
      */
     public void listen() throws IOException, ClassNotFoundException {
+        System.out.println("Inside listen()");//DEBUG
         String line;
         if ((line = this.objectInputStream.readObject().toString()) != null) {
             Pair<String, String> parts = processCommandLine(line);
             String cmd = parts.getKey();
             String arg = parts.getValue();
+            System.out.println("cmd = " + cmd); //DEBUG
+            System.out.println("arg = " + arg); //DEBUG
             this.alertHandlers(cmd, arg);
         }
     }
@@ -137,6 +143,8 @@ public class Server {
      */
     public void handleLoadCourses(String arg) {
 
+        System.out.println("handleLoadCourses");
+
         ArrayList<Course> courses = new ArrayList<Course>();
 
         try {
@@ -146,10 +154,11 @@ public class Server {
             String s;
 
             while ((s = reader.readLine()) != null) {
+                System.out.println("in while loop");//DEBUG
 
-                String[] splitString = s.split(" ");
+                String[] splitString = s.trim().split("\\s+");
 
-                if (splitString[2].equals(arg)) {
+                if (splitString[2].equals(arg.trim())) { // trim requis à vérifier en amont
                     String name = splitString[0];
                     String code = splitString[1];
                     String session = splitString[2];
@@ -159,8 +168,17 @@ public class Server {
 
             reader.close();
 
-            for (int j = 0; j < courses.size(); j++) {
-                System.out.println(courses.get(j).toString());
+            try {
+                objectOutputStream.writeObject(courses);
+                System.out.println("object sent"); // DEBUG
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            finally { //DEBUG
+
+                for (int j = 0; j < courses.size(); j++) {
+                    System.out.println(courses.get(j).toString());
+                }
             }
 
         } catch (FileNotFoundException e) {
@@ -168,7 +186,6 @@ public class Server {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        // output stream à implémenter
     }
 
     /**

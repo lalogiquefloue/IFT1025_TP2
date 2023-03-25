@@ -1,6 +1,7 @@
 package client;
 
-import client.models.Course;
+//import client.models.*;
+import server.models.*;
 
 import java.io.*;
 import java.net.ConnectException;
@@ -13,27 +14,41 @@ public class ClientSimple {
     static String courseName;
     static String courseCode;
     static String courseSession;
+    private static ObjectInputStream objectInputStream;
+    private static ObjectOutputStream objectOutputStream;
 
     public static void main(String[] args) {
+        System.out.println("main"); //DEBUG
 
         try {
+            System.out.println("socket"); //DEBUG
             Socket cS = new Socket("127.0.0.1", 1337); // localHost 127.0.0.1
 
-            OutputStreamWriter os = new OutputStreamWriter(cS.getOutputStream());
-            BufferedWriter bw = new BufferedWriter(os);
+//            OutputStreamWriter os = new OutputStreamWriter(cS.getOutputStream());
+//            bufferedWriter = new BufferedWriter(os);
 
-//            InputStreamReader is = new InputStreamReader(cS.getInputStream());
-//            BufferedReader br = new BufferedReader(is);
+            System.out.println("avant ObjectOutputStream"); //DEBUG
+            objectOutputStream = new ObjectOutputStream(cS.getOutputStream());
+            System.out.println("ObjectOutputStream créé"); //DEBUG
 
-            ObjectInputStream ois = new ObjectInputStream(cS.getInputStream());
+            System.out.println("avant ObjectInputStream"); //DEBUG
+            objectInputStream = new ObjectInputStream(cS.getInputStream());
+            System.out.println("ObjectInputStream créé"); //DEBUG
+
+//            System.out.println("before askServer()"); //DEBUG
+//            askServer("CHARGER", "Automne");
+//            System.out.println("after askServer()"); //DEBUG
 
             // TODO
-            ArrayList<Course> courses = loadCourses(bw, ois);
-            String session            = askWhichSession(bw);
-            String course             = askWhichCourse(bw);
-            registerCourse(bw, courseName, courseCode, courseSession);
-
-            bw.close();
+            String session = chooseSession();
+            ArrayList<Course> courses = loadCourses(session);
+//            String session            = chooseSession(bw);
+//            String course             = chooseCourse(bw);
+//            registerCourse(bw, courseName, courseCode, courseSession);
+//            System.out.println("test");
+//            bufferedWriter.close();
+            objectInputStream.close();
+            objectOutputStream.close();
             cS.close();
 
         } catch (ConnectException x) {
@@ -43,41 +58,46 @@ public class ClientSimple {
         }
     }
 
-    public static void askServer(BufferedWriter bw, String cmd, String arg) {
+    public static void askServer(String cmd, String arg) {
+        System.out.println("askServer method");
+        String line = cmd + " " + arg + "\n";
         try {
-            bw.append(cmd + " " + arg + "\n");
-            bw.flush();
+            objectOutputStream.writeObject(line);
+            objectOutputStream.flush();
+            System.out.println("askServer(" + cmd + ", " + arg + ") was called");
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
-    public static ArrayList<Course> loadCourses(BufferedWriter bw, ObjectInputStream ois) {
-        askServer(bw, "CHARGER", "");
-        ObjectInputStream coursesOis = ois;
+    public static ArrayList<Course> loadCourses(String arg) {
+        askServer("CHARGER", arg);
+        System.out.println("après charger");
         try {
-            ArrayList<Course> courses = (ArrayList<Course>) coursesOis.readObject();
+            System.out.println("in try");
+            Object courses = objectInputStream.readObject();
+            return (ArrayList<Course>) courses;
         } catch (IOException e) {
+            System.out.println("IOException");
             throw new RuntimeException(e);
         } catch (ClassNotFoundException e) {
+            System.out.println("ClassNotFoundException");
             throw new RuntimeException(e);
         }
-        // TODO server input reader
-        return null;
     }
 
-    public static void registerCourse(BufferedWriter bw, String name, String code, String session) {
+    public static void registerCourse(String name, String code, String session) {
         // TODO
-        askServer(bw, "CHARGER", "");
+        askServer("CHARGER", "");
     }
 
-    public static String askWhichSession(BufferedWriter bw) {
+    public static String chooseSession() {
         String session = "";
         //TODO
         return session;
     }
 
-    public static String askWhichCourse(BufferedWriter bw) {
+    public static String askWhichCourse() {
         String course = "";
         //TODO
         return course;
