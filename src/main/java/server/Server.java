@@ -1,7 +1,7 @@
 package server;
 
 import javafx.util.Pair;
-import server.models.Course;
+import server.models.*;
 
 import java.io.*;
 import java.net.ServerSocket;
@@ -63,11 +63,8 @@ public class Server {
                 client = server.accept();
                 System.out.println("Connecté au client: " + client);
                 objectInputStream = new ObjectInputStream(client.getInputStream());
-                System.out.println("ObjectInputStream créé"); //DEBUG
                 objectOutputStream = new ObjectOutputStream(client.getOutputStream());
-                System.out.println("ObjectOutputStream créé"); //DEBUG
                 listen();
-                System.out.println("after listen() in run()"); //DEBUG
                 disconnect();
                 System.out.println("Client déconnecté!");
             } catch (Exception e) {
@@ -83,14 +80,11 @@ public class Server {
      * @throws ClassNotFoundException
      */
     public void listen() throws IOException, ClassNotFoundException {
-        System.out.println("Inside listen()");//DEBUG
         String line;
         if ((line = this.objectInputStream.readObject().toString()) != null) {
             Pair<String, String> parts = processCommandLine(line);
             String cmd = parts.getKey();
             String arg = parts.getValue();
-            System.out.println("cmd = " + cmd); //DEBUG
-            System.out.println("arg = " + arg); //DEBUG
             this.alertHandlers(cmd, arg);
         }
     }
@@ -127,10 +121,8 @@ public class Server {
      */
     public void handleEvents(String cmd, String arg) {
         if (cmd.equals(REGISTER_COMMAND)) {
-            System.out.println("call handelRegistration()");
             handleRegistration();
         } else if (cmd.equals(LOAD_COMMAND)) {
-            System.out.println("call handleLoadCourse()");
             handleLoadCourses(arg);
         }
     }
@@ -156,13 +148,12 @@ public class Server {
             String s;
 
             while ((s = reader.readLine()) != null) {
-                System.out.println("in while loop");//DEBUG
 
                 String[] splitString = s.trim().split("\\s+");
 
                 if (splitString[2].equals(arg.trim())) { // trim requis à vérifier en amont
-                    String name = splitString[0];
-                    String code = splitString[1];
+                    String code = splitString[0];
+                    String name = splitString[1];
                     String session = splitString[2];
                     courses.add(new Course(name, code, session));
                 }
@@ -172,7 +163,6 @@ public class Server {
 
             try {
                 objectOutputStream.writeObject(courses);
-                System.out.println("object sent"); // DEBUG
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -191,9 +181,15 @@ public class Server {
      * @throws Exception si une erreur se produit lors de la lecture de l'objet, l'écriture dans un fichier ou dans le flux de sortie.
      */
     public void handleRegistration() {
-        // TODO: implémenter cette méthode
         System.out.println("inside handleRegistration()");
-        // objectInputStream à implémenter
+        try {
+            RegistrationForm rf = (RegistrationForm) objectInputStream.readObject();
+            System.out.println(rf);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
 

@@ -80,6 +80,7 @@ public class ClientSimple {
         }
 
     }
+
     public static String chooseSession() {
         String session = "";
         System.out.println("*** Bienvenue au portail d'inscription de cours de L'UdeM ***");
@@ -107,7 +108,6 @@ public class ClientSimple {
     }
 
     public static void chooseCourse(ArrayList<Course> courses) {
-        Course course = null;
         System.out.println("Les cours offerts pendant la session d'" + courseSession + " sont:");
         for (int i = 0; i < courses.size(); i++) {
             System.out.println(i + 1 + ". " + courses.get(i).getCode() + " " + courses.get(i).getName());
@@ -133,11 +133,48 @@ public class ClientSimple {
             }
         }
     }
+
     public static void registerCourse() throws IOException {
-        // TODO
-        System.out.println("inside registerCourse()");
         connect();
-        askServer("INSCRIRE", "");
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("Veuillez saisir votre prénom:     ");
+        String firstName = scanner.nextLine();
+
+        System.out.println("Veuillez saisir votre nom:        ");
+        String lastName = scanner.nextLine();
+
+        System.out.println("Veuillez saisir votre email:      ");
+        String email = scanner.nextLine();
+
+        System.out.println("Veuillez saisir votre matricule:  ");
+        String idNumber = scanner.nextLine();
+
+        System.out.println(courses);
+
+        boolean courseExists = false;
+
+        while (!courseExists) {
+
+            System.out.println("Veuillez saisir le code du cours: ");
+            String courseId = scanner.nextLine();
+
+            for (int i = 0; i < courses.size(); i++) {
+                if (courses.get(i).getCode().trim().equals(courseId)) {
+                    courseExists = true;
+                    RegistrationForm rf = new RegistrationForm(firstName, lastName, email, idNumber, courses.get(i));
+                    askServer("INSCRIRE", "");
+                    objectOutputStream.writeObject(rf);
+                    break;
+                }
+            }
+
+            if (!courseExists) {
+                System.out.println("Numéro de cours invalide, recommencer.");
+            }
+        }
+
         disconnect();
+        System.out.println("Félicitations!");
     }
 }
