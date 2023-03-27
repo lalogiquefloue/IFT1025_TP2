@@ -184,7 +184,23 @@ public class Server {
         System.out.println("inside handleRegistration()");
         try {
             RegistrationForm rf = (RegistrationForm) objectInputStream.readObject();
-            System.out.println(rf);
+            System.out.println(rf);//DEBUG
+            String session   = rf.getCourse().getSession();
+            String code      = rf.getCourse().getCode();
+            String idNumber  = rf.getMatricule();
+            String firstName = rf.getPrenom();
+            String lastName  = rf.getNom();
+            String email     = rf.getEmail();
+
+            String line =   session   + " " +
+                            code      + " " +
+                            idNumber  + " " +
+                            firstName + " " +
+                            lastName  + " " +
+                            email;
+
+            System.out.println(line);
+
         } catch (IOException e) {
             throw new RuntimeException(e);
         } catch (ClassNotFoundException e) {
