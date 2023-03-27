@@ -151,7 +151,7 @@ public class Server {
 
                 String[] splitString = s.trim().split("\\s+");
 
-                if (splitString[2].equals(arg.trim())) { // trim requis à vérifier en amont
+                if (splitString[2].equals(arg.trim())) {
                     String code = splitString[0];
                     String name = splitString[1];
                     String session = splitString[2];
