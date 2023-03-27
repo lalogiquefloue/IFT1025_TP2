@@ -2,6 +2,8 @@ package client;
 
 //import client.models.*; // à confirmer que c'est possible?
 
+import javafx.application.Application;
+import javafx.stage.Stage;
 import server.models.*;
 
 import java.io.*;
@@ -176,5 +178,17 @@ public class ClientSimple {
 
         disconnect();
         System.out.println("Félicitations!");
+    }
+
+    public static class JavaFX extends Application {
+
+        public static void main(String[] args) {
+            launch(args);
+        }
+
+        @Override
+        public void start(Stage primaryStage) {
+
+        }
     }
 }
