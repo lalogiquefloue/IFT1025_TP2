@@ -1,9 +1,5 @@
 package client;
 
-//import client.models.*; // à confirmer que c'est possible?
-
-import javafx.application.Application;
-import javafx.stage.Stage;
 import server.models.*;
 
 import java.io.*;
@@ -12,75 +8,20 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class ClientSimple {
+public class ClientSimple extends Client {
 
-    static String courseName;
-    static String courseCode;
     static boolean courseIsChosen = false;
     static String courseSession;
     static ArrayList<Course> courses;
-    private static ObjectInputStream objectInputStream;
-    private static ObjectOutputStream objectOutputStream;
-    private static Socket cS;
-    private final static int PORT = 1337;
-
 
     public static void main(String[] args) throws IOException {
 
         while (!courseIsChosen) {
             courseSession = chooseSession();
-            courses = loadCourses(courseSession);
+            courses = loadCoursesBySession(courseSession);
             chooseCourse(courses);
         }
         registerCourse();
-    }
-
-    public static void askServer(String cmd, String arg) {
-        try {
-            objectOutputStream.writeObject(cmd + " " + arg);
-            objectOutputStream.flush();
-            System.out.println("askServer(" + cmd + ", " + arg + ") was called");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public static void connect() {
-        try {
-            cS = new Socket("127.0.0.1", PORT);
-            objectOutputStream = new ObjectOutputStream(cS.getOutputStream());
-            objectInputStream = new ObjectInputStream(cS.getInputStream());
-        } catch (ConnectException x) {
-            System.out.println("Connexion impossible sur port 1337: pas de serveur.");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public static void disconnect() throws IOException {
-        objectOutputStream.close();
-        objectInputStream.close();
-        cS.close();
-    }
-
-    public static ArrayList<Course> loadCourses(String arg) throws IOException {
-
-        connect();
-        askServer("CHARGER", arg);
-
-        try {
-            Object courses = objectInputStream.readObject();
-            disconnect();
-            return (ArrayList<Course>) courses;
-
-        } catch (IOException e) {
-            System.out.println("IOException: " + e);
-            throw new RuntimeException(e);
-        } catch (ClassNotFoundException e) {
-            System.out.println("ClassNotFoundException: " + e);
-            throw new RuntimeException(e);
-        }
-
     }
 
     public static String chooseSession() {
@@ -175,20 +116,7 @@ public class ClientSimple {
                 System.out.println("Numéro de cours invalide, recommencer.");
             }
         }
-
         disconnect();
         System.out.println("Félicitations!");
-    }
-
-    public static class JavaFX extends Application {
-
-        public static void main(String[] args) {
-            launch(args);
-        }
-
-        @Override
-        public void start(Stage primaryStage) {
-
-        }
     }
 }
