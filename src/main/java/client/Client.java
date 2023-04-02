@@ -1,6 +1,6 @@
 package client;
 
-import server.models.Course;
+import server.models.*;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;

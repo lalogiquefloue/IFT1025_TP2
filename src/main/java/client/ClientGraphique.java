@@ -7,7 +7,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
-import server.models.Course;
+import client.models.Course;
 
 import client.Client;
 
@@ -18,13 +18,11 @@ public class ClientGraphique extends Application {
 
     public static void main(String[] args) throws IOException {
 
-        Client client = new Client();
-        System.out.println("test1");
-
-        ArrayList<Course> autumnCourses = client.loadCoursesBySession("Automne");
-        ArrayList<Course> winterCourses = client.loadCoursesBySession("Hiver");
-        ArrayList<Course> summerCourses = client.loadCoursesBySession("Ete");
-        System.out.println("testFIN");
+//        Client client = new Client();
+//
+//        ArrayList<Course> autumnCourses = client.loadCoursesBySession("Automne");
+//        ArrayList<Course> winterCourses = client.loadCoursesBySession("Hiver");
+//        ArrayList<Course> summerCourses = client.loadCoursesBySession("Ete");
 
         launch(args);
 
