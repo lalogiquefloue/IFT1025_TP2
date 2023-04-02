@@ -42,12 +42,14 @@ public class Client {
         objectInputStream.close();
         cS.close();
     }
+    public static void sendObjectToServer(Object object) throws IOException {
+        objectOutputStream.writeObject(object);
+    }
+
     public static ArrayList<Course> loadCoursesBySession(String arg) throws IOException {
-
-        connect();
-        askServer("CHARGER", arg);
-
         try {
+            connect();
+            askServer("CHARGER", arg);
             Object courses = objectInputStream.readObject();
             disconnect();
             return (ArrayList<Course>) courses;
@@ -59,6 +61,9 @@ public class Client {
             System.out.println("ClassNotFoundException: " + e);
             throw new RuntimeException(e);
         }
+    }
+    public static Object loadObjectFromServer() {
+        return null;
     }
 
 }

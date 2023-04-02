@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class ClientSimple extends Client {
-
     static boolean courseIsChosen = false;
     static String courseSession;
     static ArrayList<Course> courses;
@@ -107,7 +106,7 @@ public class ClientSimple extends Client {
                     courseExists = true;
                     RegistrationForm rf = new RegistrationForm(firstName, lastName, email, idNumber, courses.get(i));
                     askServer("INSCRIRE", "");
-                    objectOutputStream.writeObject(rf);
+                    sendObjectToServer(rf);
                     break;
                 }
             }
