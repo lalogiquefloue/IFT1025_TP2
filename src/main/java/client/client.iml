@@ -9,5 +9,6 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" exported="" name="lib" level="project" />
     <orderEntry type="module" module-name="server" exported="" />
+    <orderEntry type="library" name="openjfx.javafx.base" level="project" />
   </component>
 </module>
