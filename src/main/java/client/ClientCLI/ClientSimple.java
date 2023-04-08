@@ -1,10 +1,10 @@
-package client;
+package client.ClientCLI;
 
-import server.models.*;
+import client.Client;
+import server.models.Course;
+import server.models.RegistrationForm;
 
-import java.io.*;
-import java.net.ConnectException;
-import java.net.Socket;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 

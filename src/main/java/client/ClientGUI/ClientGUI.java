@@ -1,27 +1,25 @@
-package client;
+package client.ClientGUI;
 
+import client.Client;
 import javafx.application.Application;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.VPos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.layout.*;
+import javafx.scene.layout.ColumnConstraints;
+import javafx.scene.layout.GridPane;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
-import client.models.Course;
-
-import client.Client;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
-public class ClientGraphique extends Application {
+public class ClientGUI extends Application {
 
     public static void main(String[] args) throws IOException {
 
-//        Client client = new Client();
+        Client client = new Client();
 //
 //        ArrayList<Course> autumnCourses = client.loadCoursesBySession("Automne");
 //        ArrayList<Course> winterCourses = client.loadCoursesBySession("Hiver");
