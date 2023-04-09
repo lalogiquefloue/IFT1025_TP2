@@ -15,7 +15,6 @@ public class ClientGUI extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-
         Client model = new Client();
         ClientGUIView view = new ClientGUIView();
         ClientGUIController controller = new ClientGUIController(model, view);

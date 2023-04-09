@@ -138,13 +138,11 @@ public class Server {
      */
     public void handleLoadCourses(String arg) {
 
-        System.out.println("inside handleLoadCourses()");
-
         ArrayList<Course> courses = new ArrayList<Course>();
 
         try {
-            FileReader fr = new FileReader("./data/cours.txt");
-//            FileReader fr = new FileReader("src/main/java/server/data/cours.txt");
+//            FileReader fr = new FileReader("./data/cours.txt");
+            FileReader fr = new FileReader("src/main/java/server/data/cours.txt");
 
             BufferedReader reader = new BufferedReader(fr);
 
@@ -205,8 +203,8 @@ public class Server {
             System.out.println(line);
 
             try {
-                FileWriter fw = new FileWriter("./data/inscription.txt", true);
-//                FileWriter fw = new FileWriter("src/main/java/server/data/inscription.txt", true);
+//                FileWriter fw = new FileWriter("./data/inscription.txt", true);
+                FileWriter fw = new FileWriter("src/main/java/server/data/inscription.txt", true);
                 BufferedWriter writer = new BufferedWriter(fw);
                 writer.newLine();
                 writer.write(line);

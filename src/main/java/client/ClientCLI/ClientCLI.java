@@ -95,6 +95,7 @@ public class ClientCLI extends Client {
         System.out.println(courses);
 
         boolean courseExists = false;
+        String courseCode = null;
 
         while (!courseExists) {
 
@@ -105,6 +106,7 @@ public class ClientCLI extends Client {
                 if (courses.get(i).getCode().trim().equals(courseId)) {
                     courseExists = true;
                     RegistrationForm rf = new RegistrationForm(firstName, lastName, email, idNumber, courses.get(i));
+                    courseCode = courses.get(i).getCode();
                     askServer("INSCRIRE", "");
                     sendObjectToServer(rf);
                     break;
@@ -116,6 +118,6 @@ public class ClientCLI extends Client {
             }
         }
         disconnect();
-        System.out.println("Félicitations!");
+        System.out.println("Félicitations! Insciption réussie de " + firstName + " au cours " + courseCode + ".");
     }
 }
