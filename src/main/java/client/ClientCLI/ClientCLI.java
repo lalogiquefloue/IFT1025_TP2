@@ -77,7 +77,6 @@ public class ClientCLI extends Client {
     }
 
     public static void registerCourse() throws IOException {
-        connect();
         Scanner scanner = new Scanner(System.in);
 
         System.out.println("Veuillez saisir votre prénom:     ");
@@ -107,17 +106,15 @@ public class ClientCLI extends Client {
                     courseExists = true;
                     RegistrationForm rf = new RegistrationForm(firstName, lastName, email, idNumber, courses.get(i));
                     courseCode = courses.get(i).getCode();
-                    askServer("INSCRIRE", "");
-                    sendObjectToServer(rf);
+                    askServer("INSCRIRE", "", rf);
+//                    sendObjectToServer(rf);
                     break;
                 }
             }
-
             if (!courseExists) {
                 System.out.println("Numéro de cours invalide, recommencer.");
             }
         }
-        disconnect();
         System.out.println("Félicitations! Insciption réussie de " + firstName + " au cours " + courseCode + ".");
     }
 }

@@ -25,6 +25,19 @@ public class Client {
         }
     }
 
+    public static void askServer(String cmd, String arg, Object object) {
+        try {
+            connect();
+            objectOutputStream.writeObject(cmd + " " + arg);
+            objectOutputStream.flush();
+            System.out.println("askServer(" + cmd + ", " + arg + ") was called");
+            sendObjectToServer(object);
+            disconnect();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     public static void connect() {
         try {
             cS = new Socket("127.0.0.1", PORT);

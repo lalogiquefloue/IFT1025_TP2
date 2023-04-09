@@ -2,6 +2,7 @@ package client.ClientGUI;
 
 import client.Client;
 import client.ClientGUI.ClientGUIView;
+import javafx.collections.ObservableList;
 import server.models.*;
 
 import java.io.IOException;
@@ -28,15 +29,15 @@ public class ClientGUIController {
         });
 
         this.view.getSendButton().setOnAction((action) -> {
-            System.out.println("send");
             String firstName = view.getFirstName().getText();
-            String lastName  = view.getLastName().getText();
-            String email     = view.getEmail().getText();
-            String idNumber  = view.getIdNumber().getText();
+            String lastName = view.getLastName().getText();
+            String email = view.getEmail().getText();
+            String idNumber = view.getIdNumber().getText();
 
-//            String courseCode = view.getTableView().getSelectionModel().getSelectedCells().getCode();
+            Course selectedCourse = (Course) view.getTableView().getSelectionModel().getSelectedItems().get(0);
 
-            System.out.println(firstName + lastName + email + idNumber);
+            RegistrationForm rf = new RegistrationForm(firstName, lastName, email, idNumber, selectedCourse);
+            model.askServer("INSCRIRE", "", rf);
         });
 
 

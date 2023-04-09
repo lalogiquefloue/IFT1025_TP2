@@ -43,6 +43,9 @@ public class ClientGUIView extends GridPane {
 
         tableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
+        TableView.TableViewSelectionModel selectionModel = tableView.getSelectionModel();
+        selectionModel.setSelectionMode(SelectionMode.SINGLE);
+
         sessionSelector = new ComboBox();
 
         loadBtn = new Button("Charger");
