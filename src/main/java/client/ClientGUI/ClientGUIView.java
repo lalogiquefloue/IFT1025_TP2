@@ -9,6 +9,7 @@ import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
+import javafx.scene.control.Alert.AlertType;
 
 import server.models.*;
 
@@ -23,8 +24,10 @@ public class ClientGUIView extends GridPane {
     private TextField txtFieldLastName;
     private TextField txtFieldEmail;
     private TextField txtFieldIdNumber;
+    private Alert alert;
 
     public ClientGUIView() {
+
         // Left column ------------------------------------------------------------------------------------------------
 
         Label leftColumnTitle = new Label("Liste des cours");
@@ -101,6 +104,9 @@ public class ClientGUIView extends GridPane {
         this.add(sendBtn, 7, 5, 1, 1);
 
 
+        // Alerts ------------------------------------------------------------------------------------------------------
+        alert = new Alert(AlertType.NONE);
+
         // Grid settings -----------------------------------------------------------------------------------------------
         this.setVgap(10);
         this.setHgap(10);
@@ -174,5 +180,9 @@ public class ClientGUIView extends GridPane {
 
     public TextField getIdNumber(){
         return this.txtFieldIdNumber;
+    }
+
+    public Alert getAlert(){
+        return this.alert;
     }
 }

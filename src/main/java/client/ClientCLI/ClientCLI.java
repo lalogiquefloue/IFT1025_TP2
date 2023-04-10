@@ -70,7 +70,7 @@ public class ClientCLI extends Client {
 
             switch (choice) {
                 case 1:
-                    break loop; // PROBLEME, DOIT POUVOIR PERMETTRE DE VISUALISER UNE AUTRE SESSION
+                    break loop;
                 case 2:
                     courseIsChosen = true;
                     break loop;
