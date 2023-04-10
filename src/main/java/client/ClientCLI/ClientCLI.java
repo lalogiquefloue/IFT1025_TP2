@@ -11,20 +11,24 @@ import java.util.Scanner;
 public class ClientCLI extends Client {
     static boolean courseIsChosen = false;
     static String courseSession;
-    static ArrayList<Course> courses;
+    static ArrayList<Course> courses = null;
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
 
         while (!courseIsChosen) {
-            courseSession = chooseSession();
-            courses = loadCoursesBySession(courseSession);
-            chooseCourse(courses);
+            try {
+                courseSession = chooseSession();
+                courses = loadCoursesBySession(courseSession);
+                chooseCourse(courses);
+            } catch (Exception e) {
+                System.out.println("Échec de la requête, veuillez réessayer.");
+            }
         }
-        registerCourse();
+        registerCourseLoop();
     }
 
-    public static String chooseSession() {
-        String session = "";
+    private static String chooseSession() {
+//        String session = "";
         System.out.println("*** Bienvenue au portail d'inscription de cours de L'UdeM ***");
         System.out.println("Veuillez choisir la session pour laquelle vous voulez consulter la liste des cours:");
         System.out.println("1. Automne");
@@ -38,18 +42,18 @@ public class ClientCLI extends Client {
 
             switch (sessionChoice) {
                 case 1:
-                    return session = "Automne";
+                    return "Automne";
                 case 2:
-                    return session = "Hiver";
+                    return "Hiver";
                 case 3:
-                    return session = "Ete";
+                    return "Ete";
                 default:
-                    System.out.println("Pas un choix valide, recommencer.");
+                    System.out.println("Pas un choix valide, veuillez réessayer.");
             }
         }
     }
 
-    public static void chooseCourse(ArrayList<Course> courses) {
+    private static void chooseCourse(ArrayList<Course> courses) {
         System.out.println("Les cours offerts pendant la session d'" + courseSession + " sont:");
         for (int i = 0; i < courses.size(); i++) {
             System.out.println(i + 1 + ". " + courses.get(i).getCode() + " " + courses.get(i).getName());
@@ -66,55 +70,85 @@ public class ClientCLI extends Client {
 
             switch (choice) {
                 case 1:
-                    break loop;
+                    break loop; // PROBLEME, DOIT POUVOIR PERMETTRE DE VISUALISER UNE AUTRE SESSION
                 case 2:
                     courseIsChosen = true;
                     break loop;
                 default:
-                    System.out.println("Choix invalide, recommencer.");
+                    System.out.println("Choix invalide, veuillez réessayer.");
             }
         }
     }
 
-    public static void registerCourse() throws IOException {
+    private static void registerCourseLoop() {
         Scanner scanner = new Scanner(System.in);
 
+        boolean courseExists = false;
+        boolean inscriptionSucceeded = false;
+
+        String courseCode = null;
+        String firstName = null;
+
         System.out.println("Veuillez saisir votre prénom:     ");
-        String firstName = scanner.nextLine();
+        firstName = scanner.nextLine();
 
         System.out.println("Veuillez saisir votre nom:        ");
         String lastName = scanner.nextLine();
 
-        System.out.println("Veuillez saisir votre email:      ");
-        String email = scanner.nextLine();
+        boolean emailIsValid = false;
+        String email = null;
+        while (!emailIsValid) {
+            System.out.println("Veuillez saisir votre email:      ");
+            email = scanner.nextLine();
+            emailIsValid = email.matches("^(.+)@(.+)$");
+            if (!emailIsValid) {
+                System.out.println("Email invalide, veuillez réessayer.");
+            }
+        }
 
-        System.out.println("Veuillez saisir votre matricule:  ");
-        String idNumber = scanner.nextLine();
+        boolean idIsValid = false;
+        String idNumber = null;
+        while (!idIsValid) {
+            System.out.println("Veuillez saisir votre matricule:  ");
+            idNumber = scanner.nextLine();
+            idIsValid = idNumber.matches("^[0-9]{8}$");
+            if (!idIsValid) {
+                System.out.println("Matricule invalide, veuillez réessayer.");
+            }
+        }
 
-        System.out.println(courses);
+        System.out.println(courses); //DEBUG
 
-        boolean courseExists = false;
-        String courseCode = null;
-
-        while (!courseExists) {
+        while (!courseExists || !inscriptionSucceeded) {
 
             System.out.println("Veuillez saisir le code du cours: ");
             String courseId = scanner.nextLine();
 
             for (int i = 0; i < courses.size(); i++) {
                 if (courses.get(i).getCode().trim().equals(courseId)) {
-                    courseExists = true;
                     RegistrationForm rf = new RegistrationForm(firstName, lastName, email, idNumber, courses.get(i));
                     courseCode = courses.get(i).getCode();
-                    askServer("INSCRIRE", "", rf);
-//                    sendObjectToServer(rf);
+                    courseExists = true;
+                    try {
+                        sendRegistrationForm2Server(rf);
+                        inscriptionSucceeded = true;
+                    } catch (Exception e) {
+                        System.out.println("Échec de l'inscription, veuillez réessayer.");
+                    }
                     break;
+                } else {
+                    courseExists = false; //REQUIS??
                 }
             }
             if (!courseExists) {
-                System.out.println("Numéro de cours invalide, recommencer.");
+                System.out.println("Numéro de cours invalide, veuillez réessayer.");
+                System.out.println("*************************************************************");
             }
         }
         System.out.println("Félicitations! Insciption réussie de " + firstName + " au cours " + courseCode + ".");
+    }
+
+    private static void registerCourse() {
+
     }
 }

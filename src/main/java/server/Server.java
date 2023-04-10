@@ -30,7 +30,6 @@ public class Server {
         this.server = new ServerSocket(port, 1);
         this.handlers = new ArrayList<EventHandler>();
         this.addEventHandler(this::handleEvents);
-        System.out.println(System.getProperty("java.class.path"));//DEBUG
     }
 
     /**
@@ -120,7 +119,7 @@ public class Server {
      * @param cmd : la commande à exécuter, <code>"INSCRIRE"</code> ou <code>"CHARGER"</code>.
      * @param arg : argument pour la fonction <code>handleLoadCourses(arg)</code>. Correspond à la session demandée parmis: "Automne", "Hiver" ou "Été".
      */
-    public void handleEvents(String cmd, String arg) {
+    public void handleEvents(String cmd, String arg) throws RuntimeException {
         if (cmd.equals(REGISTER_COMMAND)) {
             handleRegistration();
         } else if (cmd.equals(LOAD_COMMAND)) {
@@ -136,22 +135,25 @@ public class Server {
      *
      * @param arg la session pour laquelle on veut récupérer la liste des cours
      */
-    public void handleLoadCourses(String arg) {
+    public void handleLoadCourses(String arg){
 
         ArrayList<Course> courses = new ArrayList<Course>();
 
+        FileReader fr = null;
+        BufferedReader reader = null;
         try {
 //            FileReader fr = new FileReader("./data/cours.txt");
-            FileReader fr = new FileReader("src/main/java/server/data/cours.txt");
+            fr = new FileReader("src/main/java/server/data/cours.txt");
+            reader = new BufferedReader(fr);
+        } catch (FileNotFoundException e) {
+            System.out.println("Fichier de données des cours non trouvé.");
+//            throw new RuntimeException(e);
+        }
 
-            BufferedReader reader = new BufferedReader(fr);
-
+        try {
             String s;
-
             while ((s = reader.readLine()) != null) {
-
                 String[] splitString = s.trim().split("\\s+");
-
                 if (splitString[2].equals(arg.trim())) {
                     String code = splitString[0];
                     String name = splitString[1];
@@ -159,20 +161,14 @@ public class Server {
                     courses.add(new Course(name, code, session));
                 }
             }
-
             reader.close();
-
-            try {
-                objectOutputStream.writeObject(courses);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
+            objectOutputStream.writeObject(courses);
         } catch (IOException e) {
-            throw new RuntimeException(e);
+//            throw new RuntimeException(e);
+        } catch (NullPointerException e){
+//            throw new RuntimeException(e);
         }
+
     }
 
     /**
@@ -193,12 +189,12 @@ public class Server {
             String email = rf.getEmail();
 
             String line =
-                    session   + " " +
-                    code      + " " +
-                    idNumber  + " " +
-                    firstName + " " +
-                    lastName  + " " +
-                    email;
+                    session + " " +
+                            code + " " +
+                            idNumber + " " +
+                            firstName + " " +
+                            lastName + " " +
+                            email;
 
             System.out.println(line);
 

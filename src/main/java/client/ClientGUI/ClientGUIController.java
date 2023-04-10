@@ -20,12 +20,8 @@ public class ClientGUIController {
 
         this.view.getLoadButton().setOnAction((action) -> {
             String session = view.getSessionSelector().getValue().toString();
-            try {
-                courses = model.loadCoursesBySession(session);
-                view.loadCourses2TableView(courses);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+            courses = model.loadCoursesBySession(session);
+            view.loadCourses2TableView(courses);
         });
 
         this.view.getSendButton().setOnAction((action) -> {
@@ -33,15 +29,15 @@ public class ClientGUIController {
             String lastName = view.getLastName().getText();
             String email = view.getEmail().getText();
             String idNumber = view.getIdNumber().getText();
-
             Course selectedCourse = (Course) view.getTableView().getSelectionModel().getSelectedItems().get(0);
 
             RegistrationForm rf = new RegistrationForm(firstName, lastName, email, idNumber, selectedCourse);
-            model.askServer("INSCRIRE", "", rf);
+
+            try {
+                model.sendRegistrationForm2Server(rf);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         });
-
-
     }
-
-
 }
