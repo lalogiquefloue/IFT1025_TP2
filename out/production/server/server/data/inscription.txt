@@ -13,3 +13,5 @@ Automne IFT1227 12345678   alskal@klaskal.com
 Automne IFT1015 12345678 c c csacsa@cdfs.com
 Automne IFT2255 12345678 c c csacsa@cdfs.com
 Automne IFT1227 12345678 c c csacsa@cdfs.com
+Automne IFT1015 12345678 Carl Thibault lalalal@lalala.com
+Automne IFT1015 12345678 CARL THIBAULT lalalal@lalala.com

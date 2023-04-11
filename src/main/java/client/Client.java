@@ -15,7 +15,13 @@ public class Client {
     protected static ObjectOutputStream objectOutputStream;
     private static Socket cS;
     private final static int PORT = 1337;
+    private final static String SERVER_IP_ADDRESS = "127.0.0.1";
 
+    /**
+     * À compléter.
+     * @param cmd
+     * @param arg
+     */
     public static void askServer(String cmd, String arg) {
         try {
             objectOutputStream.writeObject(cmd + " " + arg);
@@ -25,29 +31,39 @@ public class Client {
         }
     }
 
+    /**
+     * À compléter.
+     * @throws ConnectException
+     */
     public static void connect() throws ConnectException {
         try {
-            cS = new Socket("127.0.0.1", PORT);
+            cS = new Socket(SERVER_IP_ADDRESS, PORT);
             objectOutputStream = new ObjectOutputStream(cS.getOutputStream());
             objectInputStream = new ObjectInputStream(cS.getInputStream());
         } catch (ConnectException x) {
-            System.out.println("Connexion impossible sur port 1337: pas de serveur.");
+            System.out.println("Connexion impossible sur port " + PORT + ": pas de serveur.");
             throw new ConnectException();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
+    /**
+     * À compléter.
+     * @throws IOException
+     */
     public static void disconnect() throws IOException {
         objectOutputStream.close();
         objectInputStream.close();
         cS.close();
     }
 
-    public static void sendObjectToServer(Object object) throws IOException {
-        objectOutputStream.writeObject(object);
-    }
-
+    /**
+     * À compléter.
+     * @param arg
+     * @return
+     * @throws RuntimeException
+     */
     public static ArrayList<Course> loadCoursesBySession(String arg) throws RuntimeException {
         try {
             connect();
@@ -68,11 +84,16 @@ public class Client {
         }
     }
 
-    public static void sendRegistrationForm2Server(Object object) throws IOException {
+    /**
+     * À compléter.
+     * @param object
+     * @throws IOException
+     */
+    public static void sendObject2Server(String cmd, Object object) throws IOException {
         try{
             connect();
-            askServer("INSCRIRE", "");
-            sendObjectToServer(object);
+            askServer(cmd, "");
+            objectOutputStream.writeObject(object);
             disconnect();
         } catch (IOException e){
 //            System.out.println("Exception: " + e);

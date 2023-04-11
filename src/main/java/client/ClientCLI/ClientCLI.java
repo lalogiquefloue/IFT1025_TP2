@@ -17,9 +17,9 @@ public class ClientCLI extends Client {
 
         while (!courseIsChosen) {
             try {
-                courseSession = chooseSession();
-                courses = loadCoursesBySession(courseSession);
-                chooseCourse(courses);
+                courseSession = chooseSession();                // Ask user for desired session
+                courses = loadCoursesBySession(courseSession);  // Load courses from server
+                chooseCourse(courses);                          // Show available courses and ask user for their course choice
             } catch (Exception e) {
                 System.out.println("Échec de la requête, veuillez réessayer.");
             }
@@ -28,15 +28,15 @@ public class ClientCLI extends Client {
     }
 
     private static String chooseSession() {
-//        String session = "";
         System.out.println("*** Bienvenue au portail d'inscription de cours de L'UdeM ***");
         System.out.println("Veuillez choisir la session pour laquelle vous voulez consulter la liste des cours:");
         System.out.println("1. Automne");
         System.out.println("2. Hiver");
         System.out.println("3. Été");
 
+        Scanner scanner = new Scanner(System.in);
+
         while (true) {
-            Scanner scanner = new Scanner(System.in);
             System.out.println("Choix: ");
             int sessionChoice = scanner.nextInt();
 
@@ -81,24 +81,23 @@ public class ClientCLI extends Client {
     }
 
     private static void registerCourseLoop() {
-        Scanner scanner = new Scanner(System.in);
-
         boolean courseExists = false;
         boolean inscriptionSucceeded = false;
-
         String courseCode = null;
-        String firstName = null;
 
-        System.out.println("Veuillez saisir votre prénom:     ");
-        firstName = scanner.nextLine();
+        Scanner scanner = new Scanner(System.in);
 
-        System.out.println("Veuillez saisir votre nom:        ");
+        System.out.println("Veuillez saisir votre prénom:");
+        String firstName = scanner.nextLine();
+
+        System.out.println("Veuillez saisir votre nom:");
         String lastName = scanner.nextLine();
 
+        // Ask user for email address until it is valid
         boolean emailIsValid = false;
         String email = null;
         while (!emailIsValid) {
-            System.out.println("Veuillez saisir votre email:      ");
+            System.out.println("Veuillez saisir votre email:");
             email = scanner.nextLine();
             emailIsValid = email.matches("^(.+)@(.+)$");
             if (!emailIsValid) {
@@ -106,10 +105,11 @@ public class ClientCLI extends Client {
             }
         }
 
+        // Ask user for ID number until it is valid
         boolean idIsValid = false;
         String idNumber = null;
         while (!idIsValid) {
-            System.out.println("Veuillez saisir votre matricule:  ");
+            System.out.println("Veuillez saisir votre matricule:");
             idNumber = scanner.nextLine();
             idIsValid = idNumber.matches("^[0-9]{8}$");
             if (!idIsValid) {
@@ -119,6 +119,7 @@ public class ClientCLI extends Client {
 
         System.out.println(courses); //DEBUG
 
+        // Ask for course code until it is a valid choice and then proceed to send RegistrationForm to server
         while (!courseExists || !inscriptionSucceeded) {
 
             System.out.println("Veuillez saisir le code du cours: ");
@@ -130,15 +131,16 @@ public class ClientCLI extends Client {
                     courseCode = courses.get(i).getCode();
                     courseExists = true;
                     try {
-                        sendRegistrationForm2Server(rf);
+                        sendObject2Server("INSCRIRE", rf);
                         inscriptionSucceeded = true;
-                    } catch (Exception e) {
+                    } catch (IOException e) {
                         System.out.println("Échec de l'inscription, veuillez réessayer.");
                     }
                     break;
-                } else {
-                    courseExists = false; //REQUIS??
                 }
+//                else {
+//                    courseExists = false; //REQUIS??
+//                }
             }
             if (!courseExists) {
                 System.out.println("Numéro de cours invalide, veuillez réessayer.");
@@ -146,9 +148,5 @@ public class ClientCLI extends Client {
             }
         }
         System.out.println("Félicitations! Insciption réussie de " + firstName + " au cours " + courseCode + ".");
-    }
-
-    private static void registerCourse() {
-
     }
 }

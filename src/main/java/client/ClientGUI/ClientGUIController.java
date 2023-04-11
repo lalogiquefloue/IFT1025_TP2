@@ -62,7 +62,7 @@ public class ClientGUIController {
                 if (idIsValid && emailIsValid && !firstNameIsEmpty && !lastNameIsEmpty) {
                     RegistrationForm rf = new RegistrationForm(firstName, lastName, email, idNumber, selectedCourse);
                     try {
-                        model.sendRegistrationForm2Server(rf);
+                        model.sendObject2Server("INSCRIRE", rf);
                         alert.setAlertType(AlertType.INFORMATION);
                         alert.setContentText("Félicitations! " + firstName + " " + lastName + " est inscrit(e) avec succès au cours " + selectedCourse.getCode() + "!");
                         alert.show();
