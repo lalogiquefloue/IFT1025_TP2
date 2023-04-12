@@ -5,8 +5,9 @@ import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-import java.io.IOException;
-
+/**
+ * Classe initialisant le client, l'interface graphique et le contrôleur.
+ */
 public class ClientGUI extends Application {
 
     public static void main(String[] args) {

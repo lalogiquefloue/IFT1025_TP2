@@ -1,7 +1,7 @@
 <component name="ArtifactManager">
-  <artifact type="jar" name="ClientGUI">
-    <output-path>$PROJECT_DIR$/out/artifacts/ClientGUI</output-path>
-    <root id="archive" name="ClientGUI.jar">
+  <artifact type="jar" name="ClientGUILauncher">
+    <output-path>$PROJECT_DIR$/out/artifacts/ClientGUILauncher</output-path>
+    <root id="archive" name="ClientGUILauncher.jar">
       <element id="module-output" name="ClientGUI" />
       <element id="module-output" name="client" />
       <element id="module-output" name="server" />

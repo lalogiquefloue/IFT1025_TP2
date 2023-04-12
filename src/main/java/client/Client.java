@@ -1,7 +1,6 @@
 package client;
 
 import server.models.*;
-
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -18,9 +17,9 @@ public class Client {
     private final static String SERVER_IP_ADDRESS = "127.0.0.1";
 
     /**
-     * À compléter.
-     * @param cmd
-     * @param arg
+     * Méthode servant à transmettre une commande au serveur.
+     * @param cmd Nom de la commande à transmettre.
+     * @param arg Argument de la commande (optionnel).
      */
     public static void askServer(String cmd, String arg) {
         try {
@@ -32,8 +31,8 @@ public class Client {
     }
 
     /**
-     * À compléter.
-     * @throws ConnectException
+     * Méthode permettant d'établir une connection avec le serveur pour permettre la transmission de données.
+     * @throws ConnectException Exception lorsque la connection est impossible sur l'adresse IP et le port spécifié.
      */
     public static void connect() throws ConnectException {
         try {
@@ -49,8 +48,8 @@ public class Client {
     }
 
     /**
-     * À compléter.
-     * @throws IOException
+     * Méthode exécutant la fermeture de la connection avec le serveur.
+     * @throws IOException Exception s'il y a une I/O problématique et que les actions prévues sont impossibles à exécuter.
      */
     public static void disconnect() throws IOException {
         objectOutputStream.close();
@@ -59,7 +58,7 @@ public class Client {
     }
 
     /**
-     * À compléter.
+     * À compléter. MAKE MORE ABSTRACT?
      * @param arg
      * @return
      * @throws RuntimeException
@@ -85,20 +84,21 @@ public class Client {
     }
 
     /**
-     * À compléter.
-     * @param object
-     * @throws IOException
+     * Méthode servant à transmettre un objet au serveur à l'aide d'une commande et des ses arguments.
+     * @param cmd Nom de la commande à transmettre au serveur.
+     * @param args Arguments de la commande transmise au serveur (optionnel).
+     * @param object Objet à transmettre avec la commande.
+     * @throws IOException Exception s'il y a une I/O problématique et que les actions prévues sont impossibles à exécuter.
      */
-    public static void sendObject2Server(String cmd, Object object) throws IOException {
-        try{
+    public static void sendObjectToServer(String cmd, String args, Object object) throws IOException {
+//        try{
             connect();
-            askServer(cmd, "");
+            askServer(cmd, args);
             objectOutputStream.writeObject(object);
             disconnect();
-        } catch (IOException e){
-//            System.out.println("Exception: " + e);
-            throw new IOException();
-        }
-
+//        } catch (IOException e){
+////            System.out.println("Exception: " + e);
+//            throw new IOException();
+//        }
     }
 }

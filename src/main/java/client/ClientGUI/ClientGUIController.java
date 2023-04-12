@@ -1,8 +1,6 @@
 package client.ClientGUI;
 
 import client.Client;
-import client.ClientGUI.ClientGUIView;
-import javafx.collections.ObservableList;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import server.models.*;
@@ -11,11 +9,20 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 
+/**
+ * Classe contrôleur établissant la logique entre les interactions de l'utilisateur avec l'interface graphique
+ * et les méthodes du client.
+ */
 public class ClientGUIController {
     private Client model;
     private ClientGUIView view;
     private ArrayList<Course> courses;
 
+    /**
+     * Constructeur du contrôleur.
+     * @param model Objet <code>Client</code> afin d'en accéder les méthodes.
+     * @param view Objet <code>ClientGUIView</code> afin d'afficher l'interface graphique défini.
+     */
     public ClientGUIController(Client model, ClientGUIView view) {
         this.model = model;
         this.view = view;
@@ -27,7 +34,7 @@ public class ClientGUIController {
             String session = view.getSessionSelector().getValue().toString();
             try {
                 courses = model.loadCoursesBySession(session);
-                view.loadCourses2TableView(courses);
+                loadCourses2TableView(courses);
             } catch (Exception e) {
                 alert.setAlertType(AlertType.ERROR);
                 alert.setContentText("Impossible de charger les cours pour le moment.\nVeuillez réessayer.\n");
@@ -62,7 +69,7 @@ public class ClientGUIController {
                 if (idIsValid && emailIsValid && !firstNameIsEmpty && !lastNameIsEmpty) {
                     RegistrationForm rf = new RegistrationForm(firstName, lastName, email, idNumber, selectedCourse);
                     try {
-                        model.sendObject2Server("INSCRIRE", rf);
+                        model.sendObjectToServer("INSCRIRE", "", rf);
                         alert.setAlertType(AlertType.INFORMATION);
                         alert.setContentText("Félicitations! " + firstName + " " + lastName + " est inscrit(e) avec succès au cours " + selectedCourse.getCode() + "!");
                         alert.show();
@@ -93,5 +100,16 @@ public class ClientGUIController {
                 alert.show();
             }
         });
+    }
+
+    /**
+     * Méthode permettant d'afficher les cours contenu dans une liste de cours dans le tableau de l'interface graphique.
+     * @param courses Liste d'objet <code>Course</code>.
+     */
+    public void loadCourses2TableView(ArrayList<Course> courses) {
+        view.getTableView().getItems().clear();
+        for (int i = 0; i < courses.size(); i++) {
+            view.getTableView().getItems().add(courses.get(i));
+        }
     }
 }

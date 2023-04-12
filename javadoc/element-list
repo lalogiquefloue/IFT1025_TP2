@@ -1,4 +1,5 @@
-client_fx
 client
+client.ClientCLI
+client.ClientGUI
 server
 server.models

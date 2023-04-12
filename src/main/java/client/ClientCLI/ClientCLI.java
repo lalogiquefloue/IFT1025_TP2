@@ -3,15 +3,19 @@ package client.ClientCLI;
 import client.Client;
 import server.models.Course;
 import server.models.RegistrationForm;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+/**
+ * Classe permettant d'interagir avec le serveur via les lignes de commandes dans un terminal.
+ * L'interface passe à travers toutes les étapes requises pour compléter une inscription à un cours:
+ * consultation des cours disponibles, sélection du cours et entrée des données requises.
+ */
 public class ClientCLI extends Client {
-    static boolean courseIsChosen = false;
-    static String courseSession;
-    static ArrayList<Course> courses = null;
+    static private boolean courseIsChosen = false;
+    static private String courseSession;
+    static private ArrayList<Course> courses = null;
 
     public static void main(String[] args) {
 
@@ -24,7 +28,7 @@ public class ClientCLI extends Client {
                 System.out.println("Échec de la requête, veuillez réessayer.");
             }
         }
-        registerCourseLoop();
+        registerCourse();
     }
 
     private static String chooseSession() {
@@ -41,14 +45,16 @@ public class ClientCLI extends Client {
             int sessionChoice = scanner.nextInt();
 
             switch (sessionChoice) {
-                case 1:
+                case 1 -> {
                     return "Automne";
-                case 2:
+                }
+                case 2 -> {
                     return "Hiver";
-                case 3:
+                }
+                case 3 -> {
                     return "Ete";
-                default:
-                    System.out.println("Pas un choix valide, veuillez réessayer.");
+                }
+                default -> System.out.println("Pas un choix valide, veuillez réessayer.");
             }
         }
     }
@@ -80,7 +86,7 @@ public class ClientCLI extends Client {
         }
     }
 
-    private static void registerCourseLoop() {
+    private static void registerCourse() {
         boolean courseExists = false;
         boolean inscriptionSucceeded = false;
         String courseCode = null;
@@ -125,13 +131,13 @@ public class ClientCLI extends Client {
             System.out.println("Veuillez saisir le code du cours: ");
             String courseId = scanner.nextLine();
 
-            for (int i = 0; i < courses.size(); i++) {
-                if (courses.get(i).getCode().trim().equals(courseId)) {
-                    RegistrationForm rf = new RegistrationForm(firstName, lastName, email, idNumber, courses.get(i));
-                    courseCode = courses.get(i).getCode();
+            for (Course cours : courses) {
+                if (cours.getCode().trim().equals(courseId)) {
+                    RegistrationForm rf = new RegistrationForm(firstName, lastName, email, idNumber, cours);
+                    courseCode = cours.getCode();
                     courseExists = true;
                     try {
-                        sendObject2Server("INSCRIRE", rf);
+                        sendObjectToServer("INSCRIRE", "", rf);
                         inscriptionSucceeded = true;
                     } catch (IOException e) {
                         System.out.println("Échec de l'inscription, veuillez réessayer.");

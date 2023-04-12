@@ -10,11 +10,11 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.control.Alert.AlertType;
-
 import server.models.*;
 
-import java.util.ArrayList;
-
+/**
+ * Classe implémentant les éléments affichés par l'interface graphique.
+ */
 public class ClientGUIView extends GridPane {
     private TableView tableView;
     private Button loadBtn;
@@ -26,10 +26,12 @@ public class ClientGUIView extends GridPane {
     private TextField txtFieldIdNumber;
     private Alert alert;
 
+    /**
+     * Constructeur de l'interface graphique.
+     */
     public ClientGUIView() {
 
         // Left column ------------------------------------------------------------------------------------------------
-
         Label leftColumnTitle = new Label("Liste des cours");
         leftColumnTitle.setFont(Font.font("Helvetica", FontWeight.BOLD, 20));
 
@@ -84,7 +86,6 @@ public class ClientGUIView extends GridPane {
 
         sendBtn = new Button("Envoyer");
 
-
         // this.add(node, columnIndex, rowIndex, columnSpan, rowSpan);
 
         this.add(rightColumnTitle, 4, 0, 4, 1);
@@ -103,8 +104,7 @@ public class ClientGUIView extends GridPane {
 
         this.add(sendBtn, 7, 5, 1, 1);
 
-
-        // Alerts ------------------------------------------------------------------------------------------------------
+        // Alert dialog box --------------------------------------------------------------------------------------------
         alert = new Alert(AlertType.NONE);
 
         // Grid settings -----------------------------------------------------------------------------------------------
@@ -142,46 +142,69 @@ public class ClientGUIView extends GridPane {
         this.setPadding(new Insets(15, 15, 15, 15));
     }
 
-
-    public void loadCourses2TableView(ArrayList<Course> courses) {
-        tableView.getItems().clear();
-        for (int i = 0; i < courses.size(); i++) {
-            this.tableView.getItems().add(courses.get(i));
-        }
-    }
-
+    /**
+     * Accesseur du bouton "Charger".
+     * @return
+     */
     public Button getLoadButton() {
         return this.loadBtn;
     }
 
+    /**
+     * Accesseur du bouton "Envoyer".
+     * @return
+     */
     public Button getSendButton() {
         return this.sendBtn;
     }
 
+    /**
+     * Accesseur de la liste déroulante affichant les sessions à sélectionner.
+     * @return
+     */
     public ComboBox getSessionSelector() {
         return this.sessionSelector;
     }
 
+    /**
+     * Accesseur du tableau d'affichage des cours.
+     * @return
+     */
     public TableView getTableView() {
         return this.tableView;
     }
 
+    /**
+     * Accesseur du champ de saisie de texte du prénom.
+     */
     public TextField getFirstName(){
         return this.txtFieldFirstName;
     }
 
+    /**
+     * Accesseur du champ de saisie de texte du nom.
+     */
     public TextField getLastName(){
         return this.txtFieldLastName;
     }
 
+    /**
+     * Accesseur du champ de saisie de texte de l'email.
+     */
     public TextField getEmail(){
         return this.txtFieldEmail;
     }
 
+    /**
+     * Accesseur du champ de saisie de texte du matricule.
+     */
     public TextField getIdNumber(){
         return this.txtFieldIdNumber;
     }
 
+    /**
+     * Accesseur de la fenêtre d'alertes.
+     */
     public Alert getAlert(){
         return this.alert;
     }

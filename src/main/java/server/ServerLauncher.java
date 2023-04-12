@@ -1,5 +1,8 @@
 package server;
 
+/**
+ * Classe servant à lancer l'exécution du serveur.
+ */
 public class ServerLauncher {
     public final static int PORT = 1337;
 

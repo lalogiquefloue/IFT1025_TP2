@@ -2,14 +2,18 @@ package server;
 
 import javafx.util.Pair;
 import server.models.*;
-
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-
+/**
+ * Classe du serveur assurant la gestion des connexions et des communications avec les clients via un socket.
+ * Les commandes définies sont: <br>
+ * - <code>INSCRIRE</code> permettant l'inscription à un cours par le biais de la classe "RegistartionForm". <br>
+ * - <code>CHARGER</code> permettant de charger les cours d'une session donnée en argument ("Automne", "Hiver" ou "Ete").
+ */
 public class Server {
 
     public final static String REGISTER_COMMAND = "INSCRIRE";
@@ -33,7 +37,7 @@ public class Server {
     }
 
     /**
-     * Méthode ajoutant un évènement "EventHandler" à la liste d'"handlers" à être exécutés par le serveur.
+     * Méthode ajoutant un évènement à la liste d'évènements devant être exécutés par le serveur.
      * @param h Évènement créé par l'intermédiaire de l'interface fonctionnelle <code>EventHandler</code>.
      */
     public void addEventHandler(EventHandler h) {
@@ -41,9 +45,9 @@ public class Server {
     }
 
     /**
-     * Méthode
-     * @param cmd
-     * @param arg
+     * Méthode exécutant les évènements contenus dans la liste d'évènements avec la commande et l'argument spécifié.
+     * @param cmd : Commande de la fonction à exécuter.
+     * @param arg : Argument pour les fonctions définies (optionnel).
      */
     private void alertHandlers(String cmd, String arg) throws IOException {
         for (EventHandler h : this.handlers) {
@@ -52,9 +56,8 @@ public class Server {
     }
 
     /**
-     * Méthode constituant la base de la boucle d'évènements du serveur.
-     * La méthode <code>run()</code> permet d'établir la connection avec les nouveaux clients en créant les
-     * <code>ObjectInputStream</code> et <code>ObjectOutputStream</code> requis et attends les commandes à exécuter.
+     * Méthode constituant la boucle d'évènements du serveur. La méthode accepte les connections avec les clients,
+     * attend leurs commandes pour les traiter et déconnecte ensuite le client.
      */
     public void run() {
         while (true) {
@@ -102,7 +105,7 @@ public class Server {
 
     /**
      * Méthode exécutant la fermeture des streams et du socket avec le client.
-     * @throws IOException Exception s'il y a une entrée ou sortie invalide.
+     * @throws IOException Exception s'il y a une I/O problématique et que les actions prévues sont impossibles à exécuter.
      */
     public void disconnect() throws IOException {
         objectOutputStream.close();
@@ -113,7 +116,7 @@ public class Server {
     /**
      * Méthode redirigeant les commandes reçues par le serveur vers les méthodes définies.
      * @param cmd : Commande de la fonction à exécuter.
-     * @param arg : Argument pour les fonctions définies, lorsque requis.
+     * @param arg : Argument pour les fonctions définies (optionnel).
      */
     public void handleEvents(String cmd, String arg) throws RuntimeException {
         if (cmd.equals(REGISTER_COMMAND)) {
@@ -124,12 +127,8 @@ public class Server {
     }
 
     /**
-     * Lire un fichier texte contenant des informations sur les cours et les transformer en liste d'objets 'Course'.
-     * La méthode filtre les cours par la session spécifiée en argument.
-     * Ensuite, elle renvoie la liste des cours pour une session au client en utilisant l'objet 'objectOutputStream'.
-     * La méthode gère les exceptions si une erreur se produit lors de la lecture du fichier ou de l'écriture de l'objet dans le flux.
-     *---------------------
-     * Méthode chargeant depuis un fichier
+     * Méthode chargeant, depuis les données des cours disponibles, tous les cours pour une session données.
+     * La méthode renvoie au client une liste de ces cours.
      * @param arg Session pour laquelle on veut récupérer la liste des cours ("Automne", "Hiver" ou "Ete").
      */
     public void handleLoadCourses(String arg) {
@@ -181,15 +180,9 @@ public class Server {
             String lastName = rf.getNom();
             String email = rf.getEmail();
 
-            String line =
-                    session + " " +
-                            code + " " +
-                            idNumber + " " +
-                            firstName + " " +
-                            lastName + " " +
-                            email;
+            String line = session + " " + code + " " + idNumber + " " + firstName + " " + lastName + " " + email;
 
-            System.out.println(line);
+//            System.out.println(line); //DEBUG
 
             try {
 //                FileWriter fw = new FileWriter("./data/inscription.txt", true);
