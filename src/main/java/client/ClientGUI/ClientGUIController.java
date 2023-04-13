@@ -92,7 +92,7 @@ public class ClientGUIController {
                     }
                 }
             }
-            if (errorLog != "") {
+            if (!errorLog.equals("")) {
                 errorLog += "Veuillez réessayer.";
                 alert.setAlertType(AlertType.ERROR);
                 alert.setContentText(errorLog);
@@ -107,8 +107,8 @@ public class ClientGUIController {
      */
     public void loadCourses2TableView(ArrayList<Course> courses) {
         view.getTableView().getItems().clear();
-        for (int i = 0; i < courses.size(); i++) {
-            view.getTableView().getItems().add(courses.get(i));
+        for (Course cours : courses) {
+            view.getTableView().getItems().add(cours);
         }
     }
 }

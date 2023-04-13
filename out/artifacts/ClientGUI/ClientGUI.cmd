@@ -1,0 +1,1 @@
+java -jar --module-path "C:\Program Files\Java\javafx-sdk-20\lib" --add-modules=javafx.controls,javafx.fxml ClientGUI.jar

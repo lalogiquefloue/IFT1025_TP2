@@ -6,7 +6,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 /**
- * Classe initialisant le client, l'interface graphique et le contrôleur.
+ * Classe initialisant le client, le contrôleur et affichant l'interface graphique.
  */
 public class ClientGUI extends Application {
 

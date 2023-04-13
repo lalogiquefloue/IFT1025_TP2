@@ -1,11 +1,13 @@
 package server;
 
 import server.models.*;
+
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Arrays;
+
 import javafx.util.Pair;
 
 /**
@@ -27,6 +29,7 @@ public class Server {
     /**
      * Constructeur de la classe "Server" prenant en paramètre le numéro du port qui servira aux communications.
      * La classe initialise une liste de "handlers" avec leurs méthodes.
+     *
      * @param port Port avec lequel initialiser le serveur.
      * @throws IOException Exception si une erreur d'I/O survient lors de l'ouverture du socket.
      */
@@ -38,6 +41,7 @@ public class Server {
 
     /**
      * Méthode ajoutant un évènement à la liste d'évènements devant être exécutés par le serveur.
+     *
      * @param h Évènement créé par l'intermédiaire de l'interface fonctionnelle <code>EventHandler</code>.
      */
     public void addEventHandler(EventHandler h) {
@@ -46,6 +50,7 @@ public class Server {
 
     /**
      * Méthode exécutant les évènements contenus dans la liste d'évènements avec la commande et l'argument spécifié.
+     *
      * @param cmd : Commande de la fonction à exécuter.
      * @param arg : Argument pour les fonctions définies (optionnel).
      */
@@ -78,7 +83,8 @@ public class Server {
 
     /**
      * Méthode recevant et traitant les commandes envoyées par le client.
-     * @throws IOException Eception lorsque le format de l'objet transmis est invalide.
+     *
+     * @throws IOException            Eception lorsque le format de l'objet transmis est invalide.
      * @throws ClassNotFoundException Exception lorsque la classe reçue est invalide.
      */
     public void listen() throws IOException, ClassNotFoundException {
@@ -94,6 +100,7 @@ public class Server {
     /**
      * Méthode faisant le traitement des commandes textuelles transmises au serveur en l'assignant aux valeurs
      * cmd et args correspondantes.
+     *
      * @param line Commande textuelle transmise au serveur.
      * @return Paire de String correspondant à la commande et l'argument à exécuter.
      */
@@ -106,6 +113,7 @@ public class Server {
 
     /**
      * Méthode exécutant la fermeture des streams et du socket avec le client.
+     *
      * @throws IOException Exception s'il y a une I/O problématique et que les actions prévues sont impossibles à exécuter.
      */
     public void disconnect() throws IOException {
@@ -116,6 +124,7 @@ public class Server {
 
     /**
      * Méthode redirigeant les commandes reçues par le serveur vers les méthodes définies.
+     *
      * @param cmd : Commande de la fonction à exécuter.
      * @param arg : Argument pour les fonctions définies (optionnel).
      */
@@ -130,6 +139,7 @@ public class Server {
     /**
      * Méthode chargeant, depuis les données des cours disponibles, tous les cours pour une session données avec la commande "CHARGER nom_de_la_session".
      * La méthode renvoie au client une liste des objets représentant ces cours.
+     *
      * @param arg Session pour laquelle on veut récupérer la liste des cours ("Automne", "Hiver" ou "Ete").
      */
     public void handleLoadCourses(String arg) {
@@ -137,8 +147,8 @@ public class Server {
         FileReader fr = null;
         BufferedReader reader = null;
         try {
-            fr = new FileReader("./data/cours.txt");
-//            fr = new FileReader("src/main/java/server/data/cours.txt");
+//            fr = new FileReader("./data/cours.txt");
+            fr = new FileReader("src/main/java/server/data/cours.txt");
             reader = new BufferedReader(fr);
         } catch (FileNotFoundException e) {
             System.out.println("Fichier 'cours.txt' non disponible.");
@@ -161,8 +171,7 @@ public class Server {
             objectOutputStream.writeObject(courses);
         } catch (IOException e) {
             System.out.println("IO Exception");
-        }
-        catch (NullPointerException e){
+        } catch (NullPointerException e) {
             System.out.println("NullPointerException");
         }
 
@@ -170,6 +179,7 @@ public class Server {
 
     /**
      * Méthode sauvegardant dans un fichier texte une inscription envoyée par le client via le modèle "RegistrationForm" avec la commande "ENREGISTRER".
+     *
      * @throws Exception si une erreur se produit lors de la lecture de l'objet, l'écriture dans un fichier ou dans le flux de sortie.
      */
     public void handleRegistration() {
@@ -187,8 +197,9 @@ public class Server {
 //            System.out.println(line); //DEBUG
 
             try {
-                FileWriter fw = new FileWriter("./data/inscription.txt", true);
-//                FileWriter fw = new FileWriter("src/main/java/server/data/inscription.txt", true);
+//                FileWriter fw = new FileWriter("./data/inscription.txt", true);
+                FileWriter fw = new FileWriter("src/main/java/server/data/inscription.txt");
+
                 BufferedWriter writer = new BufferedWriter(fw);
                 writer.newLine();
                 writer.write(line);

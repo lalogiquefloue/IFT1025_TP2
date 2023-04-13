@@ -128,18 +128,16 @@ public class ClientCLI extends Client {
             }
         }
 
-        System.out.println(courses); //DEBUG
-
         // Ask for course code until it is a valid choice and then proceed to send RegistrationForm to server
         while (!courseExists || !inscriptionSucceeded) {
 
             System.out.println("Veuillez saisir le code du cours: ");
             String courseId = scanner.nextLine();
 
-            for (Course cours : courses) {
-                if (cours.getCode().trim().equals(courseId)) {
-                    RegistrationForm rf = new RegistrationForm(firstName, lastName, email, idNumber, cours);
-                    courseCode = cours.getCode();
+            for (Course course : courses) {
+                if (course.getCode().trim().equals(courseId)) {
+                    RegistrationForm rf = new RegistrationForm(firstName, lastName, email, idNumber, course);
+                    courseCode = course.getCode();
                     courseExists = true;
                     try {
                         sendObjectToServer("INSCRIRE", "", rf);
