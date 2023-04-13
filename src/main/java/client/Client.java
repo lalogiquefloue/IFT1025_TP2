@@ -1,7 +1,6 @@
 package client;
 
 import server.models.*;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -59,6 +58,7 @@ public class Client {
 
     /**
      * À compléter. MAKE MORE ABSTRACT?
+     *
      * @param arg
      * @return
      * @throws RuntimeException
@@ -70,32 +70,24 @@ public class Client {
             Object courses = objectInputStream.readObject();
             disconnect();
             return (ArrayList<Course>) courses;
-
-        } catch (FileNotFoundException e) {
-            System.out.println("Fichier de données des cours non trouvé."); // inutile?
+        } catch (IOException | ClassNotFoundException e) {
             throw new RuntimeException();
-        } catch (IOException e) {
-//            System.out.println("IOException: " + e);
-            throw new RuntimeException(e);
-        } catch (ClassNotFoundException e) {
-//            System.out.println("ClassNotFoundException: " + e);
-            throw new RuntimeException(e);
         }
     }
 
     /**
      * Méthode servant à transmettre un objet au serveur à l'aide d'une commande et des ses arguments.
-     * @param cmd Nom de la commande à transmettre au serveur.
-     * @param args Arguments de la commande transmise au serveur (optionnel).
+     * @param cmd    Nom de la commande à transmettre au serveur.
+     * @param args   Arguments de la commande transmise au serveur (optionnel).
      * @param object Objet à transmettre avec la commande.
      * @throws IOException Exception s'il y a une I/O problématique et que les actions prévues sont impossibles à exécuter.
      */
     public static void sendObjectToServer(String cmd, String args, Object object) throws IOException {
 //        try{
-            connect();
-            askServer(cmd, args);
-            objectOutputStream.writeObject(object);
-            disconnect();
+        connect();
+        askServer(cmd, args);
+        objectOutputStream.writeObject(object);
+        disconnect();
 //        } catch (IOException e){
 ////            System.out.println("Exception: " + e);
 //            throw new IOException();

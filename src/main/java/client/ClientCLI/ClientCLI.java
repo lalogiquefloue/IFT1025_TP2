@@ -1,8 +1,7 @@
 package client.ClientCLI;
 
 import client.Client;
-import server.models.Course;
-import server.models.RegistrationForm;
+import server.models.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -19,12 +18,15 @@ public class ClientCLI extends Client {
 
     public static void main(String[] args) {
 
+        System.out.println("*** Bienvenue au portail d'inscription de cours de L'UdeM ***");
+
         while (!courseIsChosen) {
             try {
                 courseSession = chooseSession();                // Ask user for desired session
                 courses = loadCoursesBySession(courseSession);  // Load courses from server
                 chooseCourse(courses);                          // Show available courses and ask user for their course choice
-            } catch (Exception e) {
+            }
+            catch (Exception e) {
                 System.out.println("Échec de la requête, veuillez réessayer.");
             }
         }
@@ -32,7 +34,6 @@ public class ClientCLI extends Client {
     }
 
     private static String chooseSession() {
-        System.out.println("*** Bienvenue au portail d'inscription de cours de L'UdeM ***");
         System.out.println("Veuillez choisir la session pour laquelle vous voulez consulter la liste des cours:");
         System.out.println("1. Automne");
         System.out.println("2. Hiver");
@@ -60,28 +61,32 @@ public class ClientCLI extends Client {
     }
 
     private static void chooseCourse(ArrayList<Course> courses) {
-        System.out.println("Les cours offerts pendant la session d'" + courseSession + " sont:");
-        for (int i = 0; i < courses.size(); i++) {
-            System.out.println(i + 1 + ". " + courses.get(i).getCode() + " " + courses.get(i).getName());
-        }
-        System.out.println("Options:");
-        System.out.println("1. Consulter les cours offerts pour une autre session.");
-        System.out.println("2. Inscription à un cours.");
+        System.out.println("Les cours offerts pendant la session d'" + courseSession.toLowerCase() + " sont:");
+        if (courses.size() == 0) {
+            System.out.println("Aucun cours n'est disponible pour la session d'" + courseSession.toLowerCase() + ".");
+        } else {
+            for (int i = 0; i < courses.size(); i++) {
+                System.out.println(i + 1 + ". " + courses.get(i).getCode() + " " + courses.get(i).getName());
+            }
+            System.out.println("Options:");
+            System.out.println("1. Consulter les cours offerts pour une autre session.");
+            System.out.println("2. Inscription à un cours.");
 
-        loop:
-        while (true) {
-            Scanner scanner = new Scanner(System.in);
-            System.out.println("Choix: ");
-            int choice = scanner.nextInt();
+            loop:
+            while (true) {
+                Scanner scanner = new Scanner(System.in);
+                System.out.println("Choix: ");
+                int choice = scanner.nextInt();
 
-            switch (choice) {
-                case 1:
-                    break loop;
-                case 2:
-                    courseIsChosen = true;
-                    break loop;
-                default:
-                    System.out.println("Choix invalide, veuillez réessayer.");
+                switch (choice) {
+                    case 1:
+                        break loop;
+                    case 2:
+                        courseIsChosen = true;
+                        break loop;
+                    default:
+                        System.out.println("Choix invalide, veuillez réessayer.");
+                }
             }
         }
     }

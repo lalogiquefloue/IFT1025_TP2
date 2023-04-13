@@ -1,10 +1,9 @@
 package client.ClientGUI;
 
 import client.Client;
+import server.models.*;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
-import server.models.*;
-
 import java.io.IOException;
 import java.util.ArrayList;
 

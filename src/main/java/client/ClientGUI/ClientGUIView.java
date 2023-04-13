@@ -1,16 +1,16 @@
 package client.ClientGUI;
 
+import server.models.*;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.VPos;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
-import javafx.scene.control.Alert.AlertType;
-import server.models.*;
 
 /**
  * Classe implémentant les éléments affichés par l'interface graphique.

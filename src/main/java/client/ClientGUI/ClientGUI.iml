@@ -8,7 +8,7 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" exported="" scope="RUNTIME" name="lib" level="project" />
-    <orderEntry type="module" module-name="client" />
+    <orderEntry type="module" module-name="client" exported="" />
     <orderEntry type="module" module-name="server" exported="" />
   </component>
 </module>

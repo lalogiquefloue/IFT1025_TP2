@@ -1,16 +1,16 @@
 package server;
 
-import javafx.util.Pair;
 import server.models.*;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Arrays;
+import javafx.util.Pair;
 
 /**
  * Classe du serveur assurant la gestion des connexions et des communications avec les clients via un socket.
- * Les commandes définies sont: <br>
+ * Les commandes traitées sont: <br>
  * - <code>INSCRIRE</code> permettant l'inscription à un cours par le biais de la classe "RegistartionForm". <br>
  * - <code>CHARGER</code> permettant de charger les cours d'une session donnée en argument ("Automne", "Hiver" ou "Ete").
  */
@@ -64,6 +64,7 @@ public class Server {
             try {
                 client = server.accept();
                 System.out.println("Connecté au client: " + client);
+                // thread débute ici???
                 objectInputStream = new ObjectInputStream(client.getInputStream());
                 objectOutputStream = new ObjectOutputStream(client.getOutputStream());
                 listen();
@@ -127,8 +128,8 @@ public class Server {
     }
 
     /**
-     * Méthode chargeant, depuis les données des cours disponibles, tous les cours pour une session données.
-     * La méthode renvoie au client une liste de ces cours.
+     * Méthode chargeant, depuis les données des cours disponibles, tous les cours pour une session données avec la commande "CHARGER nom_de_la_session".
+     * La méthode renvoie au client une liste des objets représentant ces cours.
      * @param arg Session pour laquelle on veut récupérer la liste des cours ("Automne", "Hiver" ou "Ete").
      */
     public void handleLoadCourses(String arg) {
@@ -136,11 +137,12 @@ public class Server {
         FileReader fr = null;
         BufferedReader reader = null;
         try {
-//            FileReader fr = new FileReader("./data/cours.txt");
-            fr = new FileReader("src/main/java/server/data/cours.txt");
+            fr = new FileReader("./data/cours.txt");
+//            fr = new FileReader("src/main/java/server/data/cours.txt");
             reader = new BufferedReader(fr);
         } catch (FileNotFoundException e) {
-            System.out.println("Fichier 'cours.txt' non trouvé.");
+            System.out.println("Fichier 'cours.txt' non disponible.");
+            return;
         }
 
         try {
@@ -158,16 +160,16 @@ public class Server {
             reader.close();
             objectOutputStream.writeObject(courses);
         } catch (IOException e) {
-//            throw new RuntimeException(e);
+            System.out.println("IO Exception");
         }
         catch (NullPointerException e){
-//            throw new RuntimeException(e);
+            System.out.println("NullPointerException");
         }
 
     }
 
     /**
-     * Méthode sauvegardant dans un fichier texte une inscription envoyée par le client via le modèle "RegistrationForm".
+     * Méthode sauvegardant dans un fichier texte une inscription envoyée par le client via le modèle "RegistrationForm" avec la commande "ENREGISTRER".
      * @throws Exception si une erreur se produit lors de la lecture de l'objet, l'écriture dans un fichier ou dans le flux de sortie.
      */
     public void handleRegistration() {
@@ -185,8 +187,8 @@ public class Server {
 //            System.out.println(line); //DEBUG
 
             try {
-//                FileWriter fw = new FileWriter("./data/inscription.txt", true);
-                FileWriter fw = new FileWriter("src/main/java/server/data/inscription.txt", true);
+                FileWriter fw = new FileWriter("./data/inscription.txt", true);
+//                FileWriter fw = new FileWriter("src/main/java/server/data/inscription.txt", true);
                 BufferedWriter writer = new BufferedWriter(fw);
                 writer.newLine();
                 writer.write(line);
