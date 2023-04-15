@@ -1,2 +1,1 @@
-
-Automne IFT1015 12345678 Carl Thibault lalala@lalala.com
+Automne	IFT2255	12345678	Michalis	Famelis	mfamelis@iro.umontreal.ca

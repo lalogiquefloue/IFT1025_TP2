@@ -83,14 +83,9 @@ public class Client {
      * @throws IOException Exception s'il y a une I/O problématique et que les actions prévues sont impossibles à exécuter.
      */
     public static void sendObjectToServer(String cmd, String args, Object object) throws IOException {
-//        try{
         connect();
         askServer(cmd, args);
         objectOutputStream.writeObject(object);
         disconnect();
-//        } catch (IOException e){
-////            System.out.println("Exception: " + e);
-//            throw new IOException();
-//        }
     }
 }

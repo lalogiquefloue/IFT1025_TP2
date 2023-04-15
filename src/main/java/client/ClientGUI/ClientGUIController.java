@@ -13,7 +13,6 @@ import java.util.ArrayList;
  * et les méthodes du client.
  */
 public class ClientGUIController {
-    private Client model;
     private ClientGUIView view;
     private ArrayList<Course> courses;
 
@@ -23,7 +22,6 @@ public class ClientGUIController {
      * @param view Objet <code>ClientGUIView</code> afin d'afficher l'interface graphique défini.
      */
     public ClientGUIController(Client model, ClientGUIView view) {
-        this.model = model;
         this.view = view;
 
         Alert alert = this.view.getAlert();
@@ -36,7 +34,7 @@ public class ClientGUIController {
                 loadCourses2TableView(courses);
             } catch (Exception e) {
                 alert.setAlertType(AlertType.ERROR);
-                alert.setContentText("Impossible de charger les cours pour le moment.\nVeuillez réessayer.\n");
+                alert.setContentText("Impossible de charger les cours via le serveur pour le moment.\nVeuillez réessayer.\n");
                 alert.show();
             }
         });
@@ -74,7 +72,7 @@ public class ClientGUIController {
                         alert.show();
                     } catch (IOException e) {
                         alert.setAlertType(AlertType.ERROR);
-                        alert.setContentText("Impossible de transmettre la demande d'inscription au serveur pour le moment.");
+                        alert.setContentText("Impossible de transmettre la demande d'inscription au serveur pour le moment.\nVeuillez réessayer.\n");
                         alert.show();
                     }
                 } else {

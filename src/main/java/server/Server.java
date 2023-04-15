@@ -144,8 +144,8 @@ public class Server {
      */
     public void handleLoadCourses(String arg) {
 
-        FileReader fr = null;
-        BufferedReader reader = null;
+        FileReader fr;
+        BufferedReader reader;
         try {
 //            fr = new FileReader("./data/cours.txt");
             fr = new FileReader("src/main/java/server/data/cours.txt");
@@ -183,37 +183,35 @@ public class Server {
      * @throws Exception si une erreur se produit lors de la lecture de l'objet, l'écriture dans un fichier ou dans le flux de sortie.
      */
     public void handleRegistration() {
+
+        RegistrationForm rf = null;
+
         try {
-            RegistrationForm rf = (RegistrationForm) objectInputStream.readObject();
-            String session = rf.getCourse().getSession();
-            String code = rf.getCourse().getCode();
-            String idNumber = rf.getMatricule();
-            String firstName = rf.getPrenom();
-            String lastName = rf.getNom();
-            String email = rf.getEmail();
+            rf = (RegistrationForm) objectInputStream.readObject();
+        } catch (ClassNotFoundException | IOException e) {
+            System.out.println("Erreur liée à la réception du objectInputStream.");
+        }
 
-            String line = session + " " + code + " " + idNumber + " " + firstName + " " + lastName + " " + email;
+        String session = rf.getCourse().getSession();
+        String code = rf.getCourse().getCode();
+        String idNumber = rf.getMatricule();
+        String firstName = rf.getPrenom();
+        String lastName = rf.getNom();
+        String email = rf.getEmail();
 
-//            System.out.println(line); //DEBUG
+        String line = session + "\t" + code + "\t" + idNumber + "\t" + firstName + "\t" + lastName + "\t" + email;
 
-            try {
+        try {
 //                FileWriter fw = new FileWriter("./data/inscription.txt", true);
-                FileWriter fw = new FileWriter("src/main/java/server/data/inscription.txt");
-
-                BufferedWriter writer = new BufferedWriter(fw);
-                writer.newLine();
-                writer.write(line);
-                writer.close();
-            } catch (IOException ex) {
-                System.out.println("Erreur à l'écriture du fichier 'inscription.txt'.");
-                throw new IOException();
-            }
-
-        } catch (IOException e) {
-//            throw new RuntimeException(e);
-        } catch (ClassNotFoundException e) {
-//            throw new RuntimeException(e);
+            FileWriter fw = new FileWriter("src/main/java/server/data/inscription.txt", true);
+            BufferedWriter writer = new BufferedWriter(fw);
+            writer.newLine();
+            writer.write(line);
+            writer.close();
+        } catch (IOException ex) {
+            System.out.println("Erreur à l'écriture du fichier 'inscription.txt'.");
         }
     }
 }
+
 

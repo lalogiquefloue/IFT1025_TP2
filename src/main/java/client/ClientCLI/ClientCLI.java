@@ -2,6 +2,7 @@ package client.ClientCLI;
 
 import client.Client;
 import server.models.*;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -25,8 +26,7 @@ public class ClientCLI extends Client {
                 courseSession = chooseSession();                // Ask user for desired session
                 courses = loadCoursesBySession(courseSession);  // Load courses from server
                 chooseCourse(courses);                          // Show available courses and ask user for their course choice
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 System.out.println("Échec de la requête, veuillez réessayer.");
             }
         }
@@ -136,9 +136,9 @@ public class ClientCLI extends Client {
 
             for (Course course : courses) {
                 if (course.getCode().trim().equals(courseId)) {
+                    courseExists = true;
                     RegistrationForm rf = new RegistrationForm(firstName, lastName, email, idNumber, course);
                     courseCode = course.getCode();
-                    courseExists = true;
                     try {
                         sendObjectToServer("INSCRIRE", "", rf);
                         inscriptionSucceeded = true;
@@ -147,9 +147,6 @@ public class ClientCLI extends Client {
                     }
                     break;
                 }
-//                else {
-//                    courseExists = false; //REQUIS??
-//                }
             }
             if (!courseExists) {
                 System.out.println("Numéro de cours invalide, veuillez réessayer.");
