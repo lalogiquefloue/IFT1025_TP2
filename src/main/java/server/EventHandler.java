@@ -1,3 +1,9 @@
+/*
+IFT1025 - TP2
+Auteur: Carl Thibault
+Date: 16 avril 2023
+ */
+
 package server;
 
 import java.io.IOException;

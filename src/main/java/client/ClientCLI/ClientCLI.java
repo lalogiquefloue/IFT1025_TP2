@@ -1,8 +1,13 @@
+/*
+IFT1025 - TP2
+Auteur: Carl Thibault
+Date: 16 avril 2023
+ */
+
 package client.ClientCLI;
 
 import client.Client;
 import server.models.*;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -52,6 +57,7 @@ public class ClientCLI extends Client {
                 case 2 -> {
                     return "Hiver";
                 }
+
                 case 3 -> {
                     return "Ete";
                 }
@@ -150,9 +156,8 @@ public class ClientCLI extends Client {
             }
             if (!courseExists) {
                 System.out.println("Numéro de cours invalide, veuillez réessayer.");
-                System.out.println("*************************************************************");
             }
         }
-        System.out.println("Félicitations! Insciption réussie de " + firstName + " au cours " + courseCode + ".");
+        System.out.println("Félicitations! Inscription réussie de " + firstName + " au cours " + courseCode + ".");
     }
 }

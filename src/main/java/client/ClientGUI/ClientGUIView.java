@@ -1,3 +1,9 @@
+/*
+IFT1025 - TP2
+Auteur: Carl Thibault
+Date: 16 avril 2023
+ */
+
 package client.ClientGUI;
 
 import server.models.*;
@@ -87,21 +93,15 @@ public class ClientGUIView extends GridPane {
         sendBtn = new Button("Envoyer");
 
         // this.add(node, columnIndex, rowIndex, columnSpan, rowSpan);
-
         this.add(rightColumnTitle, 4, 0, 4, 1);
-
         this.add(labelFirstName, 4, 1, 1, 1);
         this.add(txtFieldFirstName, 5, 1, 3, 1);
-
         this.add(labelLastName, 4, 2, 1, 1);
         this.add(txtFieldLastName, 5, 2, 3, 1);
-
         this.add(labelEmail, 4, 3, 1, 1);
         this.add(txtFieldEmail, 5, 3, 3, 1);
-
         this.add(labelIdNumber, 4, 4, 1, 1);
         this.add(txtFieldIdNumber, 5, 4, 3, 1);
-
         this.add(sendBtn, 7, 5, 1, 1);
 
         // Alert dialog box --------------------------------------------------------------------------------------------
