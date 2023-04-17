@@ -31,6 +31,7 @@ public class Server {
     private ObjectInputStream objectInputStream;
     private ObjectOutputStream objectOutputStream;
     private final ArrayList<EventHandler> handlers;
+    Object runThreadLock = new Object();
 
     /**
      * Constructeur de la classe "Server" prenant en paramètre le numéro du port qui servira aux communications.
@@ -74,16 +75,33 @@ public class Server {
         while (true) {
             try {
                 client = server.accept();
-                System.out.println("Connecté au client: " + client);
-                // thread débute ici???
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            System.out.println("Connecté au client: " + client);
+            Runnable runThread = this::runThread;
+            Thread t = new Thread(runThread);
+            t.start();
+            try {
+                t.join();
+            } catch (InterruptedException e) {
+                System.out.println("Interruption");
+            }
+        }
+    }
+
+    public void runThread() {
+        synchronized (runThreadLock) {
+            try {
                 objectInputStream = new ObjectInputStream(client.getInputStream());
                 objectOutputStream = new ObjectOutputStream(client.getOutputStream());
                 listen();
                 disconnect();
-                System.out.println("Client déconnecté!");
-            } catch (Exception e) {
+            } catch (IOException | ClassNotFoundException e) {
                 e.printStackTrace();
             }
+
+            System.out.println("Client déconnecté!");
         }
     }
 

@@ -3,8 +3,6 @@
   <component name="CompilerConfiguration">
     <bytecodeTargetLevel>
       <module name="ClientCLI" target="19" />
-      <module name="ClientCLI.main" target="19" />
-      <module name="ClientCLI.test" target="19" />
     </bytecodeTargetLevel>
   </component>
 </project>
