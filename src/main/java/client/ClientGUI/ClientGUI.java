@@ -1,10 +1,10 @@
 /*
 IFT1025 - TP2
 Auteur: Carl Thibault
-Date: 16 avril 2023
+Date: 17 avril 2023
  */
 
-package client.ClientGUI;
+package client.clientgui;
 
 import client.Client;
 import javafx.application.Application;

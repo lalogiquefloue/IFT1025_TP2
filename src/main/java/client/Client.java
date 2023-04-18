@@ -1,7 +1,7 @@
 /*
 IFT1025 - TP2
 Auteur: Carl Thibault
-Date: 16 avril 2023
+Date: 17 avril 2023
  */
 
 package client;
@@ -14,6 +14,9 @@ import java.net.ConnectException;
 import java.net.Socket;
 import java.util.ArrayList;
 
+/**
+ * Classe regroupant les méthodes utilisées par les clients.
+ */
 public class Client {
     protected static ObjectInputStream objectInputStream;
     protected static ObjectOutputStream objectOutputStream;
@@ -63,11 +66,10 @@ public class Client {
     }
 
     /**
-     * À compléter. MAKE MORE ABSTRACT?
-     *
-     * @param arg
-     * @return
-     * @throws RuntimeException
+     * Méthode servant à charger la liste des cours pour la session désirée.
+     * @param arg Session des cours à charger ("Automne", "Hiver" ou "Ete").
+     * @return ArrayList des cours de la session demandée.
+     * @throws RuntimeException Exception lancée lorsqu'il y a un problème avec la connection auserveur.
      */
     public static ArrayList<Course> loadCoursesBySession(String arg) throws RuntimeException {
         try {

@@ -1,10 +1,10 @@
 /*
 IFT1025 - TP2
 Auteur: Carl Thibault
-Date: 16 avril 2023
+Date: 17 avril 2023
  */
 
-package client.ClientCLI;
+package client.clientcli;
 
 import client.Client;
 import server.models.*;

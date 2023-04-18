@@ -2,7 +2,7 @@
   <artifact type="jar" name="ClientCLI">
     <output-path>$PROJECT_DIR$/out/artifacts/ClientCLI</output-path>
     <root id="archive" name="ClientCLI.jar">
-      <element id="module-output" name="ClientCLI" />
+      <element id="module-output" name="clientcli" />
       <element id="module-output" name="client" />
       <element id="module-output" name="server" />
       <element id="extracted-dir" path="$PATH_TO_FX$/javafx-swt.jar" path-in-jar="/" />

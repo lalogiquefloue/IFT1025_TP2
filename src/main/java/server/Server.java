@@ -1,7 +1,7 @@
 /*
 IFT1025 - TP2
 Auteur: Carl Thibault
-Date: 16 avril 2023
+Date: 17 avril 2023
  */
 
 package server;
@@ -41,7 +41,7 @@ public class Server {
      * @throws IOException Exception si une erreur d'I/O survient lors de l'ouverture du socket.
      */
     public Server(int port) throws IOException {
-        this.server = new ServerSocket(port, 1);
+        this.server = new ServerSocket(port, 100);
         this.handlers = new ArrayList<EventHandler>();
         this.addEventHandler(this::handleEvents);
     }
@@ -80,16 +80,19 @@ public class Server {
             }
             System.out.println("Connecté au client: " + client);
             Runnable runThread = this::runThread;
-            Thread t = new Thread(runThread);
-            t.start();
+            Thread thrad = new Thread(runThread);
+            thrad.start();
             try {
-                t.join();
+                thrad.join();
             } catch (InterruptedException e) {
                 System.out.println("Interruption");
             }
         }
     }
 
+    /**
+     * Méthode lancée lors de la création de threads pour permettre la gestion de multiples clients simultanément.
+     */
     public void runThread() {
         synchronized (runThreadLock) {
             try {
@@ -100,7 +103,6 @@ public class Server {
             } catch (IOException | ClassNotFoundException e) {
                 e.printStackTrace();
             }
-
             System.out.println("Client déconnecté!");
         }
     }
@@ -171,8 +173,8 @@ public class Server {
         FileReader fr;
         BufferedReader reader;
         try {
-//            fr = new FileReader("./data/cours.txt");
-            fr = new FileReader("src/main/java/server/data/cours.txt");
+            fr = new FileReader("./data/cours.txt"); // jar filepath
+//            fr = new FileReader("src/main/java/server/data/cours.txt"); // IDE filepath
             reader = new BufferedReader(fr);
         } catch (FileNotFoundException e) {
             System.out.println("Fichier 'cours.txt' non disponible.");
@@ -204,7 +206,7 @@ public class Server {
     /**
      * Méthode sauvegardant dans un fichier texte une inscription envoyée par le client via le modèle "RegistrationForm" avec la commande "ENREGISTRER".
      *
-     * @throws Exception si une erreur se produit lors de la lecture de l'objet, l'écriture dans un fichier ou dans le flux de sortie.
+     * @throws Exception Exception si une erreur se produit lors de la lecture de l'objet, l'écriture dans un fichier ou dans le flux de sortie.
      */
     public void handleRegistration() {
 
@@ -216,6 +218,7 @@ public class Server {
             System.out.println("Erreur liée à la réception du objectInputStream.");
         }
 
+        // Gather information from the transmitted registration form
         String session = rf.getCourse().getSession();
         String code = rf.getCourse().getCode();
         String idNumber = rf.getMatricule();
@@ -223,11 +226,12 @@ public class Server {
         String lastName = rf.getNom();
         String email = rf.getEmail();
 
+        // Line to be added to inscription file
         String line = session + "\t" + code + "\t" + idNumber + "\t" + firstName + "\t" + lastName + "\t" + email;
 
         try {
-//                FileWriter fw = new FileWriter("./data/inscription.txt", true);
-            FileWriter fw = new FileWriter("src/main/java/server/data/inscription.txt", true);
+            FileWriter fw = new FileWriter("./data/inscription.txt", true); // jar filepath
+//            FileWriter fw = new FileWriter("src/main/java/server/data/inscription.txt", true); // IDE filepath
             BufferedWriter writer = new BufferedWriter(fw);
             writer.newLine();
             writer.write(line);

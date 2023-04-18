@@ -1,6 +1,6 @@
 <component name="ArtifactManager">
-  <artifact type="jar" name="server">
-    <output-path>$PROJECT_DIR$/out/artifacts/server</output-path>
+  <artifact type="jar" name="Server">
+    <output-path>$PROJECT_DIR$/out/artifacts/Server</output-path>
     <root id="archive" name="server.jar">
       <element id="module-output" name="server" />
       <element id="extracted-dir" path="$PATH_TO_FX$/javafx-swt.jar" path-in-jar="/" />
