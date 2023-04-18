@@ -54,6 +54,7 @@ public class ClientGUIController {
             }
             if (errorLog.equals("")) {
 
+                // check if entered information is of valid form
                 String firstName = view.getFirstName().getText();
                 boolean firstNameIsEmpty = firstName.isEmpty();
 
@@ -74,7 +75,7 @@ public class ClientGUIController {
                     } catch (IOException e) {
                         showAlert(alert, "ERROR", "Impossible de transmettre la demande d'inscription au serveur pour le moment.\nVeuillez réessayer.\n");
                     }
-                } else {
+                } else { // If some information is invalid, tell user which field is to be corrected
                     if (firstNameIsEmpty) {
                         errorLog += "- Entrez votre prénom.\n";
                     }
@@ -91,7 +92,7 @@ public class ClientGUIController {
             }
             if (!errorLog.equals("")) {
                 errorLog += "Veuillez réessayer.";
-                showAlert(alert, "ERROR", errorLog);
+                showAlert(alert, "ERROR", errorLog); // Show dialog box with errors
             }
         });
     }

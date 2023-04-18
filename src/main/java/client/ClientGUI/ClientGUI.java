@@ -12,7 +12,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 /**
- * Classe initialisant le client, le contrôleur et affichant l'interface graphique.
+ * Classe initialisant le client, le contrôleur et affichant l'interface graphique d'inscription aux cours.
  */
 public class ClientGUI extends Application {
 
@@ -22,13 +22,13 @@ public class ClientGUI extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        Client model = new Client();
-        ClientGUIView view = new ClientGUIView();
-        ClientGUIController controller = new ClientGUIController(model, view);
+        Client model = new Client(); // create model object
+        ClientGUIView view = new ClientGUIView(); // create view object
+        ClientGUIController controller = new ClientGUIController(model, view); // create controller object
         Scene scene = new Scene(view, 600, 500);
         primaryStage.setScene(scene);
         primaryStage.setTitle("Inscription UdeM");
-        primaryStage.show();
+        primaryStage.show(); // show GUI
     }
 }
 

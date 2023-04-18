@@ -80,10 +80,10 @@ public class Server {
             }
             System.out.println("Connecté au client: " + client);
             Runnable runThread = this::runThread;
-            Thread thrad = new Thread(runThread);
-            thrad.start();
+            Thread thread = new Thread(runThread);
+            thread.start();
             try {
-                thrad.join();
+                thread.join();
             } catch (InterruptedException e) {
                 System.out.println("Interruption");
             }

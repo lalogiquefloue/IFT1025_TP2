@@ -38,6 +38,7 @@ public class ClientCLI extends Client {
         registerCourse();
     }
 
+    // Method asking users which session they want to consult courses available
     private static String chooseSession() {
         System.out.println("Veuillez choisir la session pour laquelle vous voulez consulter la liste des cours:");
         System.out.println("1. Automne");
@@ -66,6 +67,7 @@ public class ClientCLI extends Client {
         }
     }
 
+    // Method showing user which courses are available to make a choice from
     private static void chooseCourse(ArrayList<Course> courses) {
         System.out.println("Les cours offerts pendant la session d'" + courseSession.toLowerCase() + " sont:");
         if (courses.size() == 0) {
@@ -97,6 +99,7 @@ public class ClientCLI extends Client {
         }
     }
 
+    // Method asking users their infos (name, email, ID number) and which course to send registration form
     private static void registerCourse() {
         boolean courseExists = false;
         boolean inscriptionSucceeded = false;

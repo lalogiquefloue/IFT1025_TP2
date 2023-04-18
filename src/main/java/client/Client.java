@@ -69,7 +69,7 @@ public class Client {
      * Méthode servant à charger la liste des cours pour la session désirée.
      * @param arg Session des cours à charger ("Automne", "Hiver" ou "Ete").
      * @return ArrayList des cours de la session demandée.
-     * @throws RuntimeException Exception lancée lorsqu'il y a un problème avec la connection auserveur.
+     * @throws RuntimeException Exception lancée lorsqu'il y a un problème avec la connection au serveur.
      */
     public static ArrayList<Course> loadCoursesBySession(String arg) throws RuntimeException {
         try {

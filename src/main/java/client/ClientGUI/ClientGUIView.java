@@ -19,7 +19,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 
 /**
- * Classe implémentant les éléments affichés par l'interface graphique.
+ * Classe implémentant les éléments affichés par l'interface graphique d'inscription aux cours.
  */
 public class ClientGUIView extends GridPane {
     private TableView tableView;
@@ -33,7 +33,7 @@ public class ClientGUIView extends GridPane {
     private Alert alert;
 
     /**
-     * Constructeur de l'interface graphique.
+     * Constructeur de l'interface graphique d'inscription aux cours.
      */
     public ClientGUIView() {
 
