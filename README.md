@@ -1,5 +1,3 @@
-/////////////////////////////////
-
 Travail pratique #2 dans le cadre du cours IFT1025 à l'Université de Montréal. 
 Implémentation d'une plateforme d'inscription à un cours avec architecture client / serveur.
 
